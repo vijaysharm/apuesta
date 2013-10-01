@@ -1,0 +1,57 @@
+html(lang="en")
+ head
+  title Apuesta
+  link(href="/stylesheets/style.css" rel="stylesheet")
+ body
+  script(type="text/template", id="teams")
+    div <%= away.data.name %> vs <%= home.data.name %>
+  script(type="text/template", id="score")
+    div <%= score.away %> - <%= score.home %>
+  script(type="text/template", id="spread")
+    div Spread <%= text %>
+
+  div(id="login")
+    form
+      input(type="text" id="username" size="15" placeHolder="Username")
+      button(type="submit" id="loginButton")
+        span Login
+  div(id="main", class="container")
+    div(id="menu", class="row")
+      ul
+        li(class="column one") 
+          a(href="/#week/1") week 1
+        li(class="column one") 
+          a(href="/#week/2") week 2
+        li(class="column one")
+          a(href="/#week/3") week 3
+        li(class="column one")
+          a(href="/#week/4") week 4
+        li(class="column one")
+          a(href="/#week/5") week 5
+        li(class="column one")
+          a(href="/#week/6") week 6
+        li(class="column one")
+          a(href="/#week/7") week 7
+        li(class="column one")
+          a(href="/#week/8") week 8
+        li(class="column one")
+          a(href="/#week/9") week 9
+        li(class="column one")
+          a(href="/#week/10") week 10
+        li(class="column one")
+          a(href="/#week/11") week 11
+        li(class="column one")
+          a(href="/#week/12") week 12
+        li(class="column one")
+          a(href="/#week/13") week 13
+        li(class="column one")
+          a(href="/#week/14") week 14
+        li(class="column one")
+          a(href="/#week/15") week 15
+        li(class="column one")
+          a(href="/#week/16") week 16
+    div(class="row")
+      div(id="loading")
+        span Loading...
+      div(id="content")
+  script(data-main="/javascripts/apuesta", src="/javascripts/require.js")

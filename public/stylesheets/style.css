@@ -1,0 +1,111 @@
+/* reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/* Fluid Layout */
+/* force all elements to use the IE box model, which means that margin and padding are added to the inside of the element, not to the outside */
+* {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+.container {
+    width: 90%;
+    margin: 0 auto;
+}
+
+/* Start clearfix hack */
+.container:after {
+    content: ‘’;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+    clear: both;
+}
+
+.container {
+    zoom: 1
+}
+/* end clearfix hack */
+
+.row {
+    width: 100%;
+    float: left;
+    clear: both;
+}
+
+.column {
+    float: left;
+}
+
+/* width = column size / 16 * 100% */
+.one { width: 6.25%; }
+.two { width: 12.50% }
+.three {}
+.four {}
+.five {}
+.six {}
+.seven {}
+.eight { width: 50%; }
+.nine {}
+.ten {}
+.eleven {}
+.twelve {}
+.thirteen {}
+.fourteen {}
+.fifteen {}
+.sixteen { width: 100%; }
+
+/* Custom Styles */
+#login, #main, #loading, #content {
+	display: none;
+}
+
+.game {
+    border: 1px black solid;
+    margin-bottom: 5px;
+}
