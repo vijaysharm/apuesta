@@ -2,12 +2,13 @@ var users = require('./data/users');
 
 var login = function( req, res ) {
 	var b = req.body;
-	users.findUser( b.username, function( user ) {
+	var name = b.username.toLowerCase();
+	users.findUser( name, function( user ) {
 		if ( user === null ) {
 			res.json({ error:'No user found' });
 		} else {
 			var sessionId = '12345';
-			users.setSession( b.username, sessionId, function() {
+			users.setSession( name, sessionId, function() {
 				req.session.user = user;
 				res.json(200, { user:'logged in' });
 			});

@@ -10,6 +10,10 @@ the scores have been added
 TODO
 * As a user I can see stats about my winning
   percentage overall
+* As a user, I should have a way of seeing the CBS
+  picks
+* As a user, I should be able to change my selection
+  from the either the picks and game page.
 * As a user, I can see the consensus picks for a week
 * As a user I should be able to upvote for consensus pick
 * As a user I can see stats on the winning 
@@ -31,3 +35,12 @@ TODO
   server (should you be throwing? or sending back
   error codes?)
 * Support seasons beyond 2013
+* Remove the migration so that in the case of a failed
+  query, you resort the file for results, instead of pre
+  populating the database. That way, when you make a change
+  and need to upgrade, you dont mess up the live system
+* Have a way of exporting data, and importing it so you can
+  restore a system in case of a mistake on upgrade.
+* Have a way of getting scores from an external source
+* Have a way of getting spreads from an external source
+* Fix the "Please ensure" warning message from Mongodb

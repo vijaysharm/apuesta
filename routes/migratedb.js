@@ -48,7 +48,7 @@ var initializeSchedule = function( db, callback ) {
 			var p = picks.getInMemoryPick('1',i.toString(),gameId);
 			if ( p ) {
 				storedpicks.push({
-					userid: 'Krishna.Tiwari@statcan.gc.ca',
+					userid: 'krishna.tiwari@statcan.gc.ca',
 					gameid: gameId,
 					pick: p,
 					week: i
@@ -58,7 +58,7 @@ var initializeSchedule = function( db, callback ) {
 			p = picks.getInMemoryPick('2',i.toString(),gameId);
 			if ( p ) {
 				storedpicks.push({
-					userid: 'Pierre-Louis.Venne@statcan.gc.ca',
+					userid: 'pierre-louis.venne@statcan.gc.ca',
 					gameid: gameId,
 					pick: p,
 					week: i
@@ -68,7 +68,7 @@ var initializeSchedule = function( db, callback ) {
 			p = picks.getInMemoryPick('3',i.toString(),gameId);
 			if ( p ) {
 				storedpicks.push({
-					userid: 'Ralston.McKenzie@statcan.gc.ca',
+					userid: 'ralston.mcKenzie@statcan.gc.ca',
 					gameid: gameId,
 					pick: p,
 					week: i
@@ -78,7 +78,7 @@ var initializeSchedule = function( db, callback ) {
 			p = picks.getInMemoryPick('4',i.toString(),gameId);
 			if ( p ) {
 				storedpicks.push({
-					userid: 'Sunil.Bajaj@aandc-aadnc.gc.ca',
+					userid: 'sunil.bajaj@aandc-aadnc.gc.ca',
 					gameid: gameId,
 					pick: p,
 					week: i
