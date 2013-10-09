@@ -8,6 +8,7 @@ var picks = require('./data/picks');
 var metadata = require('./data/gamesmetadata').metadata;
 
 var initializeUsers = function( db, callback ) {
+	console.log( 'migration started.' );
 	var usersdb = db.collection('users');
 	usersdb.drop();
 	usersdb.insert( users, function(err,result) {
@@ -103,17 +104,29 @@ var initializeSchedule = function( db, callback ) {
 		}
 	}
 
-	callback();
+	var versiondb = db.collection('properties');
+	versiondb.insert({'version':1.0},function(err,version) {
+		console.log('migration finished');
+		callback();
+	});
 };
 
 exports.execute = function( callback ) {
 	var end = function() {
-		console.log('migration finished')
 		callback();
 	};
 
 	connection.getInstance(function( db ) {
-		console.log( 'migration started.' );
-		initializeUsers( db, end );
+		var versiondb = db.collection('properties');
+		versiondb.findOne(function(err,version) {
+			if ( err ) throw err;
+
+			if ( version == null ) {
+				initializeUsers( db, end );
+			} else {
+				console.log('Data has already been migrated.');
+				end();
+			}
+		});
 	});
 };
