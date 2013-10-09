@@ -1,38 +1,64 @@
+var connection = require('../database');
 var users = [
 	{
-		id: 1,
+		_id: 'Krishna.Tiwari@statcan.gc.ca',
 		name: 'Krishna',
-		username: 'Krishna.Tiwari@statcan.gc.ca'
+		role: 'user',
+		league: 'statscan'
 	}, 
 	{
-		id: 2,
+		_id: 'Pierre-Louis.Venne@statcan.gc.ca',
 		name: 'Pierre-Louis',
-		username: 'Pierre-Louis.Venne@statcan.gc.ca'
+		role: 'user',
+		league: 'statscan'
 	}, 
 	{
-		id: 3,
+		_id: 'Ralston.McKenzie@statcan.gc.ca',
 		name: 'Ralston',
-		username: 'Ralston.McKenzie@statcan.gc.ca'
+		role: 'user',
+		league: 'statscan'
 	},
 	{
-		id: 4,
+		_id: 'Sunil.Bajaj@aandc-aadnc.gc.ca',
 		name: 'Sunil',
-		username: 'Sunil.Bajaj@aandc-aadnc.gc.ca'
+		role: 'user',
+		league: 'statscan'
 	}, 
 	{
-		id: 5,
+		_id: 'vijay.sharm@gmail.com',
 		name: 'Vijay',
-		username: 'vijay.sharm@gmail.com'
+		role: 'admin',
+		league: 'statscan'
 	}, 
 ];
+exports.users = users;
 
-exports.findUser = function( username ) {
-	for ( var index in users ) {
-		var user = users[index];
-		if ( user.username === username ) {
-			return user;
-		}
-	}
-
-	return null;
+exports.findUser = function( username, callback ) {
+	connection.getInstance(function( db ) {
+		var usersdb = db.collection('users');
+		usersdb.findOne({ _id:username }, function(err, user){
+			if (err) throw err;
+			callback(user);
+		});
+	});
 };
+
+exports.setSession = function( username, sessionId, callback ) {
+	// connection.getInstance( function( db ) {
+	// 	var userdata = db.collection('userdata');
+	// 	usersdb.insert({_id:username, sessionid:sessionId}, function(err, result) {
+	// 		if ( err ) throw err;
+			callback();
+	// 	});
+	// });
+}
+
+exports.removeSession = function( username, callback ) {
+	// connection.getInstance( function( db ) {
+	// 	var userdata = db.collection('userdata');
+		// usersdb.insert({_id:username, sessionid:''}, function(err, result){
+		// 	if ( err ) throw err;
+			callback();
+		// });
+	// });
+}

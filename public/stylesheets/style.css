@@ -1,111 +1,393 @@
-/* reset */
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
-}
 body {
-	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
+	background: #2ECC71;
 }
 
-/* Fluid Layout */
-/* force all elements to use the IE box model, which means that margin and padding are added to the inside of the element, not to the outside */
-* {
-    box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
+.jumbotron {
+  background: #27AE60;
 }
 
-.container {
-    width: 90%;
-    margin: 0 auto;
+.padding-48 {
+	padding: 48px;
 }
 
-/* Start clearfix hack */
-.container:after {
-    content: ‘’;
-    display: block;
-    overflow: hidden;
-    visibility: hidden;
-    width: 0;
-    height: 0;
-    clear: both;
+.teams { 
+	padding: 48px;
 }
 
-.container {
-    zoom: 1
-}
-/* end clearfix hack */
-
-.row {
-    width: 100%;
-    float: left;
-    clear: both;
+.spread {
+	padding-bottom: 48px;
 }
 
-.column {
-    float: left;
+.teamname {
+	text-align: center;
 }
 
-/* width = column size / 16 * 100% */
-.one { width: 6.25%; }
-.two { width: 12.50% }
-.three {}
-.four {}
-.five {}
-.six {}
-.seven {}
-.eight { width: 50%; }
-.nine {}
-.ten {}
-.eleven {}
-.twelve {}
-.thirteen {}
-.fourteen {}
-.fifteen {}
-.sixteen { width: 100%; }
-
-/* Custom Styles */
-#login, #main, #loading, #content {
-	display: none;
+.teamid {
+	padding: 4px 8px;
 }
 
-.game {
-    border: 1px black solid;
-    margin-bottom: 5px;
+th {
+	text-align: center;
+}
+
+.comment {
+	background: white;
+	padding: 16px;
+	margin-bottom: 16px;
+}
+
+.comment-text {
+	font-size: 1.2em;
+	line-height: 1.5em;
+}
+
+.post-btn {
+	padding-top: 24px !important;
+	padding-bottom: 24px !important;
+	background: #27AE60;
+}
+
+.highlight-invert {
+	cursor: pointer;
+}
+
+.highlight-invert:hover {
+	background-color: #ECF0F1;
+	color: #84C1DE;
+}
+
+.highlight-invert:active {
+	color: #64B6DE;
+}
+
+.highlight {
+	background: #ECF0F1;
+	cursor: pointer;
+}
+
+.highlight:hover {
+	background: #84C1DE;
+}
+
+.highlight:active {
+	background: #64B6DE;
+}
+
+.game-row {
+	padding: 48px;
+	margin-bottom: 48px;
+}
+
+table img, .team img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+td {
+	valign: bottom;
+}
+
+.pick h4 {
+	display: inline-block;
+	margin-right: 8px;
+	vertical-align: middle;	
+}
+
+.picks-vs {
+	margin: 8px;
+}
+
+.picks-team {
+	padding: 16px 32px;
+}
+
+.white-bg {
+	background: #ECF0F1;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.team-selection {
+	font-size: 29px !important;
+	font-weight: 700 !important;
+}
+
+.pass {
+	color: white;
+	background: black;
+}
+
+.pass-invert {
+	color: black;
+	background: white;
+}
+
+.score {
+	font-size: 3em;
+	background: #B2B4B5;
+	padding: 8px 8px;
+	color: #F5F7F8;
+	margin: 0px 8px;
+}
+
+.scores {
+	margin-top: 16px;
+}
+
+.pagination {
+	font-size: 1.7em;
+}
+
+.win {
+	background: #C3E4B3;
+	border: 2px solid #eef0f0;
+}
+
+.lose {
+	background: #E4B3C3;
+	border: 2px solid #eef0f0;
+}
+
+/* bootstrap pagination override */
+.pagination > li > a,
+.pagination > li > span {
+  padding: 8px 16px;
+  background: #ECF0F1;
+  border: 0;
+}
+
+.pagination > li:first-child > a,
+.pagination > li:first-child > span {
+	border-radius: 0;
+}
+
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+	border-radius: 0;
+}
+
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+  background: #84C1DE;
+  color: #ECF0F1;
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  background: #64B6DE;
+  color: #ECF0F1;
+}
+
+/* Input buttons override */
+.btn-group > .btn:first-of-type,
+.btn-group > .btn:first-of-type:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.btn-group > .btn:last-of-type,
+.btn-group > .btn:last-of-type:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+/*Arizona Cardinals:  #B10339 (red)  |  #FFC40D (gold)  |  #000000 (black)*/
+.ari {
+	background: #B10339;
+	color: #FFC40D;
+}
+
+/*Atlanta Falcons:  #000000 (black)  |  #231F20 (red)*/
+.atl {
+	background: #000000;
+	color: #C60024;
+}
+
+/*Baltimore Ravens:  #2B025B (purple)  |  #F5A329 (gold)*/
+.bal {
+	background: #2B025B;
+	color: #F5A329;
+}
+
+/*Buffalo Bills:  #00133F (dark blue)  |  #EE2F2B (red)*/
+.buf {
+	background: #00133F;
+	color: #EE2F2B;
+}
+
+/*Carolina Panthers:  #0097C6 (teal)  |  #101B24 (black)  |  #A2A7AB (silver)*/
+.car {
+	background: #101B24;
+	color: #0097C6;
+}
+
+/*Chicago Bears:  #00133F (dark blue)  |  #FF652B (orange)*/
+.chi {
+	background: #00133F;
+	color: #FF652B;
+}
+
+/*Cincinnati Bengals:  #FF2700 (orange)  |  #101B24 (black)*/
+.cin {
+	background: #FF2700;
+	color: #101B24;
+}
+
+/*Cleveland Browns:  #4C230E (brown)  |  #FF652B (orange)*/
+.cle {
+	background: #4C230E;
+	color: #FF652B;
+}
+
+/*Dallas Cowboys:  #002E4D (dark blue)  |  #FFFFFF (white)*/
+.dal {
+	background: #002E4D;
+	color: #FFFFFF;
+}
+
+/*Denver Broncos:  #002E4D (dark blue)  |  #FF652B (orange)*/
+.den {
+	background: #002E4D;
+	color: #FF652B;
+}
+
+/*Detroit Lions:  #006EA1 (light blue)  |  #F6F6F6 (white)  |  #EFF4F8 (black)*/
+.det {
+	background: #006EA1;
+	color: #F6F6F6;
+}
+
+/*Green Bay Packers:  #294239 (green)  |  #FFBF00 (gold)*/
+.gb {
+	background: #294239;
+	color: #FFBF00;
+}
+
+/*Houston Texans:  #00133F (dark blue)  |  #D6303A (red)*/
+.hou {
+	background: #00133F;
+	color: #D6303A;
+}
+
+/*Indianapolis Colts:  #00417E (blue)  |  #FFFFFF (white)*/
+.ind {
+	background: #00417E;
+	color: #FFFFFF;
+}
+
+/*Jacksonville Jaguars:  #00839C (teal)  |  #101B24 (black)  |  #FFFFFF (white)*/
+.jac {
+	background: #00839C;
+	color: #101B24;
+}
+
+/*Kansas City Chiefs:  #C60024 (red)  |  #000000 (black)*/
+.kc {
+	background: #000000;
+	color: #C60024;
+}
+
+/*Miami Dolphins:  #006B79 (teal)  |  #FF642A (orange)*/
+.mia {
+	background: #006B79;
+	color: #FF642A;
+}
+
+/*Minnesota Vikings:  #240A67 (purple)  |  #FFAC2C (gold)*/
+.min {
+	background: #240A67;
+	color: #FFAC2C;
+}
+
+/*New England Patriots:  #00295B (dark blue)  |  #EE2F2B (red)  |  #C7CACC (silver)*/
+.ne {
+	background: #00295B;
+	color: #EE2F2B;
+}
+
+/*New Orleans Saints:  #C6A876 (light gold)  |  #000B17 (black)*/
+.no {
+	background: #C6A876;
+	color: #000B17;
+}
+
+/*New York Giants:  #003155 (dark blue)  |  #FFFFFF (white)*/
+.nyg {
+	background: #003155;
+	color: #FFFFFF;
+}
+
+/*New York Jets:  #174032 (green)  |  #FFFFFF (white)*/
+.nyj {
+	background: #174032;
+	color: #FFFFFF;
+}
+
+/*Oakland Athletics:  #000000 (black)  |  #B5BBBD (silver)  |  #FFFFFF (white)*/
+.oak {
+	background: #000000;
+	color: #B5BBBD;
+}
+
+/*Philadelphia Eagles:  #002F30 (green)  |  #EFEFEF (silver)*/
+.phi {
+	background: #002F30;
+	color: #EFEFEF;
+}
+
+/*Pittsburgh Steelers:  #000000 (black)  |  #FFBF00 (gold)*/
+.pit {
+	background: #000000;
+	color: #FFBF00;
+}
+
+/*San Diego Chargers:  #05173C (blue)  |  #0F83B8 (light blue)  |  #FFBF00 (gold)*/
+.sd {
+	background: #05173C;
+	color: #0F83B8;
+}
+
+/*San Francisco 49ers:  #940029 (red)  |  #D99E77 (light gold)*/
+.sf {
+	background: #940029;
+	color: #D99E77;
+}
+
+/*Seattle Seahawks:  #030F1F (dark blue)  |  #283E67 (light blue)*/
+.sea {
+	background: #283E67;
+	color: #FFFFFF;
+}
+
+/*St. Louis Rams:  #00295B (dark blue)  |  #C1A05B (gold)*/
+.stl {
+	background: #00295B;
+	color: #C1A05B;
+}
+
+/*Tampa Bay Buccaneers:  #665C50 (tan)  |  #D6303A (red)*/
+.tb {
+	background: #D6303A;
+	color: #665C50;
+}
+
+/*Tennessee Titans:  #002C4B (dark blue)  |  #EE2F2B (red)  |  #0080C0 (light blue)*/
+.ten {
+	background: #002C4B;
+	color: #EE2F2B;
+}
+
+/*Washington Redskins:  #8C001A (dark red)  |  #FFBF00 (gold)*/
+.was {
+	background: #FFBF00;
+	color: #8C001A;
 }

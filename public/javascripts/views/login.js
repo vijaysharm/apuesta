@@ -1,12 +1,13 @@
 define(['underscore','backbone'], function(_,Backbone) {
+	
 	var LoginView = Backbone.View.extend({
-		el: '#login',
+		className:'container padding-48 white-bg',
+		template: _.template($('#login-block').html()),
 		events: {
 			'click #loginButton': 'login'
 		},
-		initialize: function() {
-		},
 		render: function() {
+			this.$el.append(this.template({}));
 			return this;
 		},
 		login: function( event ) {
@@ -15,20 +16,7 @@ define(['underscore','backbone'], function(_,Backbone) {
 				username: $('#username').val()
 			};
 
-			$.ajax({
-				url: '/login',
-				type: 'POST',
-				dataType: 'json',
-				data: data,
-				success: this.loginCallback
-			});
-		},
-		loginCallback: function( data ) {
-			if ( data.error ) {
-				console.log(data);
-			} else {
-				Backbone.history.navigate('/#');
-			}
+			this.trigger('login', data);
 		}
 	});
 

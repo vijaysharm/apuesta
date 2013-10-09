@@ -1,0 +1,37 @@
+A full stack site to manage my friends and mine's 
+weekly NFL picks. Users can log in and see which 
+teams are playing, what the score is if there one
+the spread taken from proline, select the team they
+believe is going to beat the spread that week, see
+what the others in the league have picked as their
+winners, and see if they were right or wrong once 
+the scores have been added
+
+TODO
+* As a user I can see stats about my winning
+  percentage overall
+* As a user I can see stats on the winning 
+  percentage for the whole season of everyone 
+  in my pool
+* As an admin I can set the spread for all games
+  in a given week
+* As an admin, i can set the score for all games
+  in a given week
+* As an admin, i can set who the admin in
+* As an admin, i can set who we pick in a 
+  consensus, and can override consensus picks
+* Move team data from server to client in a utils
+  package (reduces the amount of traffic is sent 
+  over the wire)
+* Make the left most column of the picks page clickable
+  to see the game info
+* Fix the left most column in the picks page so that 
+  the team matchup icons line up nicely
+* Fix the game info page, which is scrolled all the
+  to the bottom, if i choose a game from this week
+  from the bottom of the page (makes the game info
+  page look like it didnt load)
+* Improve error handing with response types from the
+  server (should you be throwing? or sending back
+  error codes?)
+* Support seasons beyond 2013

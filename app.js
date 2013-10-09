@@ -1,5 +1,6 @@
 var express = require('express');
 var apuesta = require('./routes');
+var migrate = require('./routes/migratedb');
 var http = require('http');
 var path = require('path');
 
@@ -22,6 +23,7 @@ if ('development' == app.get('env')) {
 	app.use(express.errorHandler());
 }
 
-apuesta.init(app);
-
-http.createServer(app).listen(app.get('port'));
+migrate.execute(function(){
+	apuesta.init(app);
+	http.createServer(app).listen(app.get('port'));
+});

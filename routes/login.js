@@ -2,29 +2,39 @@ var users = require('./data/users');
 
 var login = function( req, res ) {
 	var b = req.body;
-	var user = users.findUser( b.username );
-	if ( user === null ) {
-		res.json({error:'No user found'});
-	} else {
-		req.session.user = user;
-		res.json(200, {user:'logged in'});
-	}
+	users.findUser( b.username, function( user ) {
+		if ( user === null ) {
+			res.json({ error:'No user found' });
+		} else {
+			var sessionId = '12345';
+			users.setSession( b.username, sessionId, function() {
+				req.session.user = user;
+				res.json(200, { user:'logged in' });
+			});
+		}
+	});
 };
 
 var logout = function( req, res ) {
-	req.session.user = null;
-	res.json(200, {user:'logged out'});
+	if ( req.session.user ) {
+		users.removeSession( req.session.user._id, function() {
+			req.session.user = null;
+			res.json(200, {user:'logged out'});
+		});
+	}
 };
 
 exports.authenticate = function( req, res, next ) {
 	if( req.session.user ) {
 		next();
 	} else {
-		// res.json(401, {error:'User not found'});
+		res.json(401, {error:'User not found'});
 
 		// TODO: For testing only. 
-		req.session.user = users.findUser('vijay.sharm@gmail.com');
-		next();
+		// users.findUser('vijay.sharm@gmail.com', function( user ) {
+		// 	req.session.user = user
+		// 	next();
+		// });
 		// TODO: For testing only. 
 	}
 };

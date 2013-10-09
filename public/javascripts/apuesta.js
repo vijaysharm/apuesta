@@ -9,7 +9,8 @@ require.config({
 		},
 		'bootstrap': {
 			deps: ['jquery']
-		}
+		},
+		'jquery.simpleselect': ['jquery']
 	},
 	baseUrl: '/javascripts'
 });

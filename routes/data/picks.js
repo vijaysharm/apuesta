@@ -4,55 +4,55 @@ picks['1'] = {}; picks['2'] = {}; picks['3'] = {}; picks['4'] = {}; picks['5'] =
 // Week 1
 picks['1']['1'] = {
 	2: 'BUF',
-	4: 'DET',
-	5: 'IND',
-	6: 'TEN',
-	7: 'KC',
-	8: 'SEA',
-	9: 'CHI',
-	10: 'TB',
-	11: 'MIA',
+	10: 'DET',
+	11: 'IND',
+	3: 'TEN',
+	6: 'KC',
+	7: 'SEA',
+	8: 'CHI',
+	5: 'TB',
+	9: 'MIA',
 	12: 'GB',
 	15: 'PHI',
 	16: 'HOU'
 };
 picks['2']['1'] = {
 	2: 'NE',
-	3: 'NWO',
-	4: 'DET',
-	5: 'IND',
-	6: 'TEN',
-	7: 'KC',
-	8: 'SEA',
-	10: 'TB',
-	11: 'CLE',
+	4: 'NO',
+	10: 'DET',
+	11: 'IND',
+	3: 'TEN',
+	6: 'KC',
+	7: 'SEA',
+	5: 'TB',
+	9: 'CLE',
 	12: 'SF',
 	14: 'DAL',
 	16: 'HOU'
 };
 picks['3']['1'] = {
-	3: 'ATL',
-	4: 'MIN',
-	6: 'PIT',
-	7: 'JAC',
-	8: 'CAR',
-	9: 'CHI',
-	11: 'MIA',
+	4: 'ATL',
+	10: 'MIN',
+	3: 'PIT',
+	6: 'JAC',
+	7: 'CAR',
+	8: 'CHI',
+	9: 'MIA',
 	12: 'GB',
-	13: 'ARZ',
+	13: 'ARI',
 	14: 'NYG',
 	15: 'PHI',
 	16: 'HOU'
 };
 picks['4']['1'] = {
 	2: 'NE',
-	4: 'MIN',
-	5: 'IND',
-	6: 'PIT',
-	7: 'KC',
-	8: 'SEA',
-	9: 'CIN',
-	10: 'TB',
+	10: 'MIN',
+	11: 'IND',
+	3: 'PIT',
+	6: 'KC',
+	7: 'SEA',
+	8: 'CIN',
+	5: 'TB',
 	12: 'SF',
 	14: 'NYG',
 	15: 'WAS',
@@ -70,7 +70,7 @@ picks['1']['2'] = {
 	24 : 'BAL',
 	25 : 'CAR',
 	26 : 'CHI',
-	27 : 'NWO',
+	27 : 'NO',
 	29 : 'JAC',
 	30 : 'DEN',
 	32 : 'PIT'
@@ -84,7 +84,7 @@ picks['2']['2'] = {
 	23 : 'WAS',
 	24 : 'BAL',
 	25 : 'BUF',
-	27 : 'NWO',
+	27 : 'NO',
 	28 : 'DET',
 	29 : 'JAC',
 	30 : 'DEN'
@@ -97,7 +97,7 @@ picks['3']['2'] = {
 	23 : 'WAS',
 	24 : 'BAL',
 	26 : 'MIN',
-	27 : 'NWO',
+	27 : 'NO',
 	28 : 'DET',
 	30 : 'DEN',
 	31 : 'SF',
@@ -112,7 +112,7 @@ picks['4']['2'] = {
 	24 : 'BAL',
 	25 : 'BUF',
 	26 : 'MIN',
-	27 : 'NWO',
+	27 : 'NO',
 	28 : 'DET',
 	29 : 'OAK',
 	30 : 'DEN'
@@ -126,7 +126,7 @@ picks['5']['2'] = {
 	23 : 'GB',
 	24 : 'BAL',
 	26 : 'CHI',
-	27 : 'NWO',
+	27 : 'NO',
 	29 : 'OAK',
 	30 : 'DEN',
 	32 : 'CIN'
@@ -178,7 +178,7 @@ picks['3']['3'] = {
 picks['4']['3'] = {
 	34 : 'HOU',
 	37 : 'TEN',
-	38 : 'NWO',
+	38 : 'NO',
 	39 : 'NE',
 	40 : 'GB',
 	42 : 'MIN',
@@ -192,7 +192,7 @@ picks['4']['3'] = {
 picks['5']['3'] = {
 	33 : 'KC',
 	36 : 'DET',
-	38 : 'NWO',
+	38 : 'NO',
 	39 : 'NE',
 	40 : 'CIN',
 	41 : 'DAL',
@@ -246,7 +246,7 @@ picks['3']['4'] = {
 };
 picks['4']['4'] = {
 	50 : 'BAL',
-	51 : 'ARZ',
+	51 : 'ARI',
 	52 : 'MIN',
 	53 : 'KC',
 	54 : 'IND',
@@ -269,7 +269,92 @@ picks['5']['4'] = {
 	58 : 'TEN',
 	60 : 'DEN',
 	62 : 'ATL',
-	63 : 'NWO'
+	63 : 'NO'
+};
+
+picks['1']['5'] = {
+	65 : 'NE',
+	66 : 'DET',
+	68 : 'BAL',
+	69 : 'CHI',
+	70 : 'NYG',
+	71 : 'KC',
+	72 : 'JAC',
+	73 : 'CAR',
+	74 : 'DEN',
+	76 : 'HOU',
+	75 : 'SD',
+	77 : 'ATL'
+};
+
+picks['2']['5'] = {
+	64 : 'CLE',
+	65 : 'NE',
+	66 : 'DET',
+	68 : 'BAL',
+	69 : 'CHI',
+	70 : 'PHI',
+	71 : 'KC',
+	73 : 'CAR',
+	74 : 'DEN',
+	76 : 'HOU',
+	75 : 'SD',
+	77 : 'ATL'
+};
+
+picks['3']['5'] = {
+	64 : 'BUF',
+	65 : 'NE',
+	66 : 'DET',
+	67 : 'SEA',
+	68 : 'MIA',
+	69 : 'NO',
+	70 : 'PHI',
+	71 : 'KC',
+	73 : 'CAR',
+	76 : 'HOU',
+	75 : 'OAK',
+	77 : 'NYJ'
+};
+
+picks['4']['5'] = {
+	64 : 'CLE',
+	65 : 'NE',
+	66 : 'DET',
+	67 : 'SEA',
+	69 : 'NO',
+	70 : 'PHI',
+	71 : 'KC',
+	72 : 'STL',
+	74 : 'DEN',
+	76 : 'SF',
+	75 : 'SD',
+	77 : 'ATL'
+};
+
+picks['5']['5'] = {
+	64 : 'CLE',
+	65 : 'NE',
+	66 : 'GB',
+	67 : '',
+	68 : 'MIA',
+	69 : 'NO',
+	70 : 'PHI',
+	71 : 'KC',
+	72 : '',
+	73 : 'CAR',
+	74 : 'DEN',
+	76 : 'HOU',
+	75 : 'SD',
+	77 : 'ATL'
+};
+exports.getInMemoryPick = function( userid, weekid, gameid ) {
+	var a = picks[userid][weekid];
+	if ( a ) {
+		return a[gameid];	
+	}
+
+	return null;
 };
 
 exports.getPicks = function( user, week ) {

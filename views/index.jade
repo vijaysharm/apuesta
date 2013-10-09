@@ -1,57 +1,79 @@
 html(lang="en")
  head
   title Apuesta
+  link(href="/stylesheets/bootstrap.css" rel="stylesheet")
+  link(href="/stylesheets/flat-ui.css" rel="stylesheet")
   link(href="/stylesheets/style.css" rel="stylesheet")
  body
-  script(type="text/template", id="teams")
-    div <%= away.data.name %> vs <%= home.data.name %>
-  script(type="text/template", id="score")
-    div <%= score.away %> - <%= score.home %>
-  script(type="text/template", id="spread")
-    div Spread <%= text %>
 
-  div(id="login")
-    form
-      input(type="text" id="username" size="15" placeHolder="Username")
-      button(type="submit" id="loginButton")
-        span Login
-  div(id="main", class="container")
-    div(id="menu", class="row")
-      ul
-        li(class="column one") 
-          a(href="/#week/1") week 1
-        li(class="column one") 
-          a(href="/#week/2") week 2
-        li(class="column one")
-          a(href="/#week/3") week 3
-        li(class="column one")
-          a(href="/#week/4") week 4
-        li(class="column one")
-          a(href="/#week/5") week 5
-        li(class="column one")
-          a(href="/#week/6") week 6
-        li(class="column one")
-          a(href="/#week/7") week 7
-        li(class="column one")
-          a(href="/#week/8") week 8
-        li(class="column one")
-          a(href="/#week/9") week 9
-        li(class="column one")
-          a(href="/#week/10") week 10
-        li(class="column one")
-          a(href="/#week/11") week 11
-        li(class="column one")
-          a(href="/#week/12") week 12
-        li(class="column one")
-          a(href="/#week/13") week 13
-        li(class="column one")
-          a(href="/#week/14") week 14
-        li(class="column one")
-          a(href="/#week/15") week 15
-        li(class="column one")
-          a(href="/#week/16") week 16
-    div(class="row")
-      div(id="loading")
-        span Loading...
-      div(id="content")
+  script(type="text/template", id="login-block")
+    div(id="login" class='row')
+      div(class="col-md-6 col-md-offset-2")
+        input(type="text" class='form-control' id="username" size="15" placeHolder="Username")
+      div(class="col-md-2")
+        button(type="submit" class='btn btn-default' id="loginButton") Login
+
+  script(type="text/template", id="game-comment-block")
+    div(class="row comment")
+      div(class="col-md-3 comment-left")
+        span(class="comment-by") <%= by %> on
+        span(class="comment-date")  <%= when %>
+      div(class="col-md-9 comment-left")
+        blockquote(class="comment-text") <%= comment %>
+
+  //- team selector
+  script(type="text/template", id="team-selector")
+    <div class="btn-group" data-toggle="buttons">
+    <label class="btn <%= away.style %>">
+    <input type="radio" name="options" id="<%= away.data %>"><%= away.label %>
+    </label>
+    <label class="btn <%= home.style %>">
+    <input type="radio" name="options" id="<%= home.data %>"><%= home.label %>
+    </label>
+    <label class="btn <%= pass.style %>">
+    <input type="radio" name="options" id="<%= pass.data %>"><%= pass.label %>
+    </label>    
+    </div>
+
+
+  //- weekly pager
+  script(type="text/template", id="pager")
+    ul(class="pagination pull-right")
+      li
+        <a href="/#<%= url %>/<%= previousweek %>">&laquo;</a></li>
+      li
+        <a href="#">Week <%= week %></a></li>
+      li
+        <a href="/#<%= url %>/<%= nextweek %>">&raquo;</a></li>
+
+  //- home page
+  script(type="text/template", id="span-template")
+    <span class="teamid <%= cls %>"><%= text %></span>
+
+  //- game page
+  script(type="text/template", id="team")
+    div(class="team")
+        <img src="<%= team.data.img100 %>">
+        div
+          span(class="teamname")
+            h4 <%= team.data.shortname %>
+
+  script(type="text/template", id="score")
+      span(class="score")
+        <%= score.away %>
+      span(class="score")
+        <%= score.home %>
+
+  div(class="jumbotron")
+    div(class="container")
+      div(class="row")
+        div(class="col-md-12")
+          h1 NFL Picks
+
+  div(id="loading")
+    div(class="container")
+      div(class="col-md-12 text-center")
+
+  div(id="content")
+
   script(data-main="/javascripts/apuesta", src="/javascripts/require.js")
