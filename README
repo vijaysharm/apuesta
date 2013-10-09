@@ -10,14 +10,12 @@ the scores have been added
 TODO
 * As a user I can see stats about my winning
   percentage overall
+* As a user, I can see the consensus picks for a week
+* As a user I should be able to upvote for consensus pick
 * As a user I can see stats on the winning 
   percentage for the whole season of everyone 
   in my pool
-* As an admin I can set the spread for all games
-  in a given week
-* As an admin, i can set the score for all games
-  in a given week
-* As an admin, i can set who the admin in
+* As an admin, i can set who the admin is
 * As an admin, i can set who we pick in a 
   consensus, and can override consensus picks
 * Move team data from server to client in a utils
@@ -25,8 +23,6 @@ TODO
   over the wire)
 * Make the left most column of the picks page clickable
   to see the game info
-* Fix the left most column in the picks page so that 
-  the team matchup icons line up nicely
 * Fix the game info page, which is scrolled all the
   to the bottom, if i choose a game from this week
   from the bottom of the page (makes the game info

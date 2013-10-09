@@ -23,7 +23,7 @@ define(function(){
 			var today = new Date();
 			for ( week in this.weeks ) {
 				if ( this.weeks[week] > today )
-					return week;
+					return Math.max( 1, week - 1 );
 			}
 
 			return 1;

@@ -37,11 +37,12 @@ function( Backbone,
 		login: function() {
 			$('#content').hide();
 			$('#loading').show();
-
+			$('#logout').hide();
 			var me = this;
 			var loginView = new LoginView();
 			loginView.on('login', function(data) {
 				me.doPost('/login',data, function(result) {
+
 					Backbone.history.navigate('/#');
 				});
 			});
@@ -190,14 +191,16 @@ function( Backbone,
 			options.statusCode = {
 				// Redirect to the login
 				401: function() {
-					console.log('401!!!');
-					// window.location.replace('#login');
 					Backbone.history.navigate('/#login');
 					// maybe call Main.getCurrentView().showError("")?
 				},
 				// Access Denied
 				403: function() {
 					// maybe call Main.getCurrentView().showError("")?
+				},
+				// Internal server error
+				500: function() {
+					// display a functional error
 				}
 			};
 			$.ajax(options);

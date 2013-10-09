@@ -1,13 +1,16 @@
 html(lang="en")
  head
-  title Apuesta
+  title NFL Login 2013
   link(href="/stylesheets/bootstrap.css" rel="stylesheet")
   link(href="/stylesheets/flat-ui.css" rel="stylesheet")
   link(href="/stylesheets/style.css" rel="stylesheet")
  body
 
   script(type="text/template", id="login-block")
-    div(id="login" class='row')
+    div(class='row')
+      div(class="col-md-6 col-md-offset-2")
+        h3(class='padding-16') Login to NFL Picks
+    div(class='row')
       div(class="col-md-6 col-md-offset-2")
         input(type="text" class='form-control' id="username" size="15" placeHolder="Username")
       div(class="col-md-2")
@@ -64,11 +67,12 @@ html(lang="en")
       span(class="score")
         <%= score.home %>
 
+  div(id="logout")
   div(class="jumbotron")
     div(class="container")
       div(class="row")
         div(class="col-md-12")
-          h1 NFL Picks
+          h1 NFL Picks 2013
 
   div(id="loading")
     div(class="container")
