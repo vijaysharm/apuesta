@@ -2,6 +2,19 @@ body {
 	background: #2ECC71;
 }
 
+.help {
+	color: #FF642A;
+	background: #ECF0F1;
+	padding: 8px 16px;
+	margin-top: 4px;
+	font-size: 1.2em;
+}
+
+.help:hover {
+	color: #ECF0F1;
+	background: #FF642A;
+}
+
 .jumbotron {
   background: #27AE60;
 }
