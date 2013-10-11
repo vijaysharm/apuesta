@@ -45,9 +45,7 @@ html(lang="en")
       li
         <a href="/#<%= url %>/<%= previousweek %>">&laquo;</a></li>
       li
-        <a href="#">Week <%= week %></a></li>
-      li
-        <a href="/#<%= url %>/<%= nextweek %>">&raquo;</a></li>
+        <a href="/#<%= url %>/<%= nextweek %>"><span class="pager-label"><%= label %></span>&raquo;</a></li>
 
   //- home page
   script(type="text/template", id="span-template")

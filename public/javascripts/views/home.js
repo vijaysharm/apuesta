@@ -168,14 +168,12 @@ define([
 				var away = away.team;
 				if ( spread < 0 ) {
 					this.addTeamSpread(away, spread, col);
-					col.append(this.addTeamPick());
 				} else if ( spread > 0 ) {
 					this.addTeamSpread(home, spread, col);
-					col.append(this.addTeamPick());
 				} else {
 					col.append($('<h4>').text('Even'));
 				}
-
+				col.append(this.addTeamPick());
 				this.$el.append(col);
 			}
 
@@ -201,7 +199,8 @@ define([
 						url: 'week',
 						previousweek: Utils.prevWeek(week),
 						week: week,
-						nextweek: Utils.nextWeek(week)
+						nextweek: Utils.nextWeek(week),
+						label: 'Week ' + Utils.nextWeek(week)
 					}));
 			var controlel = $('<div>',{'class':'container'})
 				.append($('<div>',{'class':'row'})

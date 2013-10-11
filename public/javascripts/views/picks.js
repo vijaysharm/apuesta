@@ -15,7 +15,8 @@ define(['underscore','backbone','utils'], function(_,Backbone,Utils) {
 						url: 'picks',
 						previousweek: Utils.prevWeek(week),
 						week: week,
-						nextweek: Utils.nextWeek(week)
+						nextweek: Utils.nextWeek(week),
+						label: 'Week ' + Utils.nextWeek(week)
 					}));
 			var controlel = $('<div>',{'class':'container'})
 				.append($('<div>',{'class':'row'})
@@ -38,13 +39,14 @@ define(['underscore','backbone','utils'], function(_,Backbone,Utils) {
 					"class":away.toLowerCase() + " " + "text-center picks-team"
 				}).text(away);
 
-				var divel = $('<div>',{
-					'class': 'picks-vs'
+				var divel = $('<a>',{
+					'class': 'picks-vs',
+					'href': '/#game/' + game.id
 				}).append(awayel).append(homeel);
 
 				var a = $('<td>',{'class':'highlight'}).append(divel).css({
 							'vertical-align':'middle',
-							'padding': 0
+							'padding': '0 8px'
 						});
 				a.click(function(e){
 					console.log('got click ' + game.id);

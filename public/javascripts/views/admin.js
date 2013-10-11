@@ -144,7 +144,8 @@ define([
 						url: 'admin',
 						previousweek: Utils.prevWeek(week),
 						week: week,
-						nextweek: Utils.nextWeek(week)
+						nextweek: Utils.nextWeek(week),
+						label: 'Week ' + week
 					}));
 			var navel = $('<div>',{'class':'col-md-5'})
 				.append($('<ul>',{'class':'pagination'})

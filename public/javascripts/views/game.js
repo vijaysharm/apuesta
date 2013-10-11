@@ -7,14 +7,105 @@ define([
 		teamTemplate: _.template($('#team').html()),
 		scoreTemplate: _.template($('#score').html()),
 		commentTemplate: _.template($('#game-comment-block').html()),
+		pager: _.template($('#pager').html()),
+		addTeamPick: function() {
+			// var pick = this.model.get('pick');
+			// var winneragainstspread = this.model.get('winneragainstspread');
+			var date = new Date(this.model.get('date'));
+			var now = new Date();
+
+			var away = this.model.get('away');
+			var home = this.model.get('home');
+
+			// var pickline
+			// if ( now > date ) {
+			// 	if ( pick ) {
+			// 		pickline = $('<h4>').append("You picked ")
+			// 			.append(this.spanTemplate({
+			// 				cls: pick.toLowerCase(),
+			// 				text: pick
+			// 		}));
+
+			// 		if ( winneragainstspread ) {
+			// 			this.$el.addClass(winneragainstspread === pick ? 'win' : 'lose');
+			// 		}						
+			// 	} else {
+			// 		pickline = $('<h4>').append("You passed on this game");
+			// 	}
+			// } else {
+			// 	var selectordata = {
+			// 		pass : {
+			// 			data:'PASS',
+			// 			label:'Pass',
+			// 			style:'team-selection highlight-invert'
+			// 		},
+			// 		home: {
+			// 			data: home.team,
+			// 			label: home.team,
+			// 			style: 'team-selection highlight-invert'
+			// 		},
+			// 		away: {
+			// 			data: away.team,
+			// 			label: away.team,
+			// 			style: 'team-selection highlight-invert'
+			// 		}
+			// 	}	
+
+			// 	var property;
+			// 	var val;
+			// 	if ( pick ) {
+			// 		if ( pick === home.team ) {
+			// 			property = 'home';
+			// 			val = home.team.toLowerCase();
+			// 		} else {
+			// 			property = 'away';
+			// 			val = away.team.toLowerCase();
+			// 		}
+			// 	} else {
+			// 		property = 'pass';
+			// 		val = 'pass';
+			// 	}
+			// 	selectordata[property].style = 
+			// 		selectordata[property].style + ' ' + val;
+
+			// 	pickline = $('<span>',{'class':'pick'})
+			// 		.append($('<h4>').text('Pick: '))
+			// 		.append(this.selectorTemplate(selectordata));	
+			// }
+			
+			return pickline;
+		},
+		events: {
+			'click #back': 'back'
+		},
+		back: function(e) {
+			e.preventDefault();
+			window.history.back();
+		},
 		render: function() {
 			var data = this.model.get('game');
-			var navel = $('<div>',{'class':'col-md-12'})
-				.append($('<ul>',{'class':'pagination'})
-					.append($('<li>').append($('<a>',{href:'/#week/' + data.week})
-							.html('&laquo; Back to Week ' + data.week + ' Games'))));
+			var back = $('<a>',{
+				href:'#',
+				'id': 'back'
+			}).html('&laquo; Back to Week ' + data.week + ' Games');
 
-			var controlel = $('<div>',{'class':'container'}).append($('<div>',{'class':'row'}).append(navel));
+			var navel = $('<div>',{'class':'col-md-5'})
+				.append($('<ul>',{'class':'pagination'})
+					.append($('<li>').append(back)));
+
+			var pagerel = $('<div>',{'class': 'col-md-4 col-md-offset-3'})
+				.append(this.pager({
+						url: 'game',
+						previousweek: data.previousgame,
+						week: data.id,
+						nextweek: data.nextgame,
+						label: data.away.team + '@' + data.home.team
+					}));
+
+			var controlel = $('<div>',{'class':'container'})
+				.append($('<div>',{'class':'row'})
+					.append(navel)
+					.append(pagerel));
 			this.$el.append(controlel);
 
 			var container = $('<div>',{'class':'container white-bg'});
@@ -51,6 +142,7 @@ define([
 				} else {
 					col.text('Even');
 				}
+				// col.append(this.addTeamPick());
 				container.append(spreadel);
 			}
 
@@ -68,8 +160,8 @@ define([
 						// TODO: yuck. i should either use the path to the image itself from the data
 						// or have the client side always work images (and remove it from the DB)
 						p = $('<img>',{src: '/images/' + userpick.pick + '.png'});
-						if ( userpick.winneragainstspread ) {
-							var win = userpick.winneragainstspread === userpick.pick;
+						if ( data.winneragainstspread ) {
+							var win = data.winneragainstspread === userpick.pick;
 							pickcell.addClass( win ? 'win' : 'lose' );
 						}
 					} else {

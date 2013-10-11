@@ -95,6 +95,10 @@ th {
 	margin-bottom: 48px;
 }
 
+.pager-label {
+	margin-right: 36px;
+}
+
 table img, .team img {
 	display: block;
 	margin-left: auto;

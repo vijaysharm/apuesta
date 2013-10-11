@@ -109,7 +109,9 @@ var formatGameByIdResponse = function( teams, game, picks, metadata, users, res 
 			away: {
 				team: game.away,
 				data: teams[game.away]
-			}
+			},
+			previousgame: game.previous,
+			nextgame: game.next
 		};
 
 		var outcomeagainstspread;
@@ -117,7 +119,7 @@ var formatGameByIdResponse = function( teams, game, picks, metadata, users, res 
 			data.score = metadata.score;
 			data.spread = metadata.spread;
 			data.date = metadata.date;
-			outcomeagainstspread = computeOutcome(metadata,game);
+			data.winneragainstspread = computeOutcome(metadata,game);
 		}
 
 		data.picks = [];
@@ -133,10 +135,6 @@ var formatGameByIdResponse = function( teams, game, picks, metadata, users, res 
 				},
 				pick: ( userpick ? userpick.pick : '' )
 			};
-
-			if ( outcomeagainstspread ) {
-				p.winneragainstspread = outcomeagainstspread;
-			}
 
 			data.picks.push(p);
 		});

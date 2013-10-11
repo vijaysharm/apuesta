@@ -315,14 +315,38 @@ exports.getGamesByWeek = function( id ) {
 	return week[id];
 };
 
+var findGameInWeek = function( week, gameId ) {
+	var game = _.find(week, function(game) { 
+		return game.id === gameId; 
+	});
+
+	return game;
+};
+
 /**
  * gameId should be an int
  */
 exports.getGameById = function( gameId ) {
 	for ( var i in week ) {
-		var game = _.find(week[i], function(game) { return game.id === gameId; });
+		var w = week[i];
+		var game = findGameInWeek( w, gameId );
 		if ( game ) {
-			game.week = i;
+			var nextgame = findGameInWeek( w, gameId + 1 );
+			var prevgame = findGameInWeek( w, gameId - 1 );
+
+			if ( nextgame ) {
+				game.next = gameId + 1;
+			} else {
+				game.next = w[0].id;
+			}
+			
+			if ( prevgame ) {
+				game.previous = gameId - 1;
+			} else {
+				game.previous = w[w.length-1].id;
+			}
+
+			game.week = i;			
 			return game;
 		}
 	}
