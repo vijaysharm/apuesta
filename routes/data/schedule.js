@@ -323,6 +323,15 @@ var findGameInWeek = function( week, gameId ) {
 	return game;
 };
 
+var clone = function( game ) {
+	var c = {
+		id: game.id,
+		away: game.away,
+		home: game.home		
+	};
+
+	return c;
+};
 /**
  * gameId should be an int
  */
@@ -330,24 +339,17 @@ exports.getGameById = function( gameId ) {
 	for ( var i in week ) {
 		var w = week[i];
 		var game = findGameInWeek( w, gameId );
+
 		if ( game ) {
 			var nextgame = findGameInWeek( w, gameId + 1 );
 			var prevgame = findGameInWeek( w, gameId - 1 );
-
-			if ( nextgame ) {
-				game.next = gameId + 1;
-			} else {
-				game.next = w[0].id;
-			}
 			
-			if ( prevgame ) {
-				game.previous = gameId - 1;
-			} else {
-				game.previous = w[w.length-1].id;
-			}
+			var result = clone(game);
+			result.previous = clone( prevgame ? prevgame : w[w.length-1] );
+			result.next = clone( nextgame ? nextgame : w[0] );
+			result.week = i;
 
-			game.week = i;			
-			return game;
+			return result;
 		}
 	}
 	return undefined;

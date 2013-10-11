@@ -198,7 +198,6 @@ define([
 				.append(this.pager({
 						url: 'week',
 						previousweek: Utils.prevWeek(week),
-						week: week,
 						nextweek: Utils.nextWeek(week),
 						label: 'Week ' + Utils.nextWeek(week)
 					}));

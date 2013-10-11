@@ -14,7 +14,6 @@ define(['underscore','backbone','utils'], function(_,Backbone,Utils) {
 				.append(this.pager({
 						url: 'picks',
 						previousweek: Utils.prevWeek(week),
-						week: week,
 						nextweek: Utils.nextWeek(week),
 						label: 'Week ' + Utils.nextWeek(week)
 					}));

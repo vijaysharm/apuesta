@@ -75,17 +75,10 @@ define([
 			
 			return pickline;
 		},
-		events: {
-			'click #back': 'back'
-		},
-		back: function(e) {
-			e.preventDefault();
-			window.history.back();
-		},
 		render: function() {
 			var data = this.model.get('game');
 			var back = $('<a>',{
-				href:'#',
+				href:'/#week/' + data.week,
 				'id': 'back'
 			}).html('&laquo; Back to Week ' + data.week + ' Games');
 
@@ -93,13 +86,13 @@ define([
 				.append($('<ul>',{'class':'pagination'})
 					.append($('<li>').append(back)));
 
+			console.log(JSON.stringify(data.nextgame));
 			var pagerel = $('<div>',{'class': 'col-md-4 col-md-offset-3'})
 				.append(this.pager({
 						url: 'game',
-						previousweek: data.previousgame,
-						week: data.id,
-						nextweek: data.nextgame,
-						label: data.away.team + '@' + data.home.team
+						previousweek: data.previousgame.id,
+						nextweek: data.nextgame.id,
+						label: 'Next: ' + data.nextgame.away + '@' + data.nextgame.home
 					}));
 
 			var controlel = $('<div>',{'class':'container'})
