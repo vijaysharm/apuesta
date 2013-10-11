@@ -354,3 +354,15 @@ exports.getGameById = function( gameId ) {
 	}
 	return undefined;
 };
+
+exports.getweekByGameId = function( gameid ) {
+	for ( var i in week ) {
+		var w = week[i];
+		var game = findGameInWeek( w, gameId );
+		if ( game ) {
+			return i;
+		}
+	}
+
+	return undefined;
+};

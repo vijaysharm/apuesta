@@ -259,6 +259,13 @@ exports.updatePickByGameId = function( user, gameid, weekid, pick, res ) {
 		picksdb.findAndModify(query, sort, update, options, function(err,userpick) {
 			if (err) throw err;
 
+			// var eventsdb = db.collection('events');
+			// query = pickevent = { gameid:[gameid], userid:user._id, type:'pick' };
+			// update = pick ? {$set:{ pick:pick }} : {$unset:{ pick:'' }};
+			// sort = [['gameid','1']];
+			// options = {upsert:true, 'new':true};
+			// eventsdb.findAndModify(query, sort, update, options,function(err,e) {});
+
 			// TODO: Should return the updated object
 			res.send(200);
 		});
@@ -306,7 +313,9 @@ var formatAddCommentsByGameIdResponse = function( comment, res ) {
 };
 
 exports.addCommentByGameId = function( user, gameid, comment, res ) {
-	var gameid = parseInt(gameid);
+	gameid = parseInt(gameid);
+	var weekid = require('./schedule').getweekByGameId(gameid);
+
 	var commentObject = {
 		comment: comment,
 		userid: user._id,
@@ -321,6 +330,13 @@ exports.addCommentByGameId = function( user, gameid, comment, res ) {
 			delete c.userid;
 			c.user = user.name;
 			formatAddCommentsByGameIdResponse(c,res);
+
+			// var eventsdb = db.collection('events');
+			// var query = pickevent = { gameid:[gameid], userid:user._id, type:'comment' };
+			// var update = pick ? {$set:{ pick:pick }} : {$unset:{ pick:'' }};
+			// var sort = [['gameid','1']];
+			// var options = {upsert:true, 'new':true};
+			// eventsdb.findAndModify(query, sort, update, options,function(err,e) {});
 		});
 	});
 };
@@ -336,10 +352,9 @@ exports.updateScores = function( scores, res ) {
 			var options = { upsert:true, 'new':true };
 			metadatadb.findAndModify(query, sort, update, options, function(err, storedspread) {
 				if (err) throw err;
-
-				// TODO: Should return the updated object
 			});
 		}, this);
+
 	});
 	res.send(200);
 };
@@ -357,6 +372,14 @@ exports.updateSpreads = function( spreads, res ) {
 				if (err) throw err;
 			});
 		}, this);
+
+		// var games = _.pluck(spreads,'gameid');
+		// var eventsdb = db.collection('events');
+		// var query = pickevent = { gameid:[gameid], userid:user._id, type:'spread' };
+		// var update = pick ? {$set:{ pick:pick }} : {$unset:{ pick:'' }};
+		// var sort = [['gameid','1']];
+		// var options = {upsert:true, 'new':true};
+		// eventsdb.findAndModify(query, sort, update, options,function(err,e) {});		
 	});
 
 	// TODO: Should return the updated object

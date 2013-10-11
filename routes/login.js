@@ -20,7 +20,7 @@ var logout = function( req, res ) {
 	if ( req.session.user ) {
 		users.removeSession( req.session.user._id, function() {
 			req.session.user = null;
-			res.json(200, {user:'logged out'});
+			res.redirect('/');
 		});
 	}
 };

@@ -65,22 +65,26 @@ html(lang="en")
       span(class="score")
         <%= score.home %>
 
-  div(id="logout")
+  div(id="logout", style="display: none;")
+    div(class="row")
+      div(class="col-md-12")
+        div(class="pull-right")
+          a(href="/help.html", target="_blank", class='help') Need Help?
+          a(href="/logout", class='help') Logout
+  
+  div(class="row")
+    div(class="jumbotron")
+      div(class="container")
+        div(class="row")
+          div(class="col-md-12")
+            h1 NFL Picks 2013
 
-  div(class="pull-right")
-    a(href="/help.html", target="_blank") 
-      span(class='help') Need Help?
-      
-  div(class="jumbotron")
-    div(class="container")
-      div(class="row")
-        div(class="col-md-12")
-          h1 NFL Picks 2013
+  div(class="row")
+    div(id="loading")
+      div(class="container")
+        div(class="col-md-12 text-center")
 
-  div(id="loading")
-    div(class="container")
-      div(class="col-md-12 text-center")
-
-  div(id="content")
+  div(class="row")
+    div(id="content")
 
   script(data-main="/javascripts/apuesta", src="/javascripts/require.js")

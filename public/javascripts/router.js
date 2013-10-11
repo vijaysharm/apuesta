@@ -54,7 +54,7 @@ function( Backbone,
 		showWeek: function( weekid ) {
 			$('#content').hide();
 			$('#loading').show();
-
+			$('#logout').show();
 			var me = this;
 			this.fetchWeek( weekid, function( data ) {
 				var homeView = new HomeView({ 
@@ -74,6 +74,7 @@ function( Backbone,
 		showGame: function( gameid ) {
 			$('#content').hide();
 			$('#loading').show();
+			$('#logout').show();
 
 			var me = this;
 			this.fetchGame( gameid, function( data ) {
@@ -104,6 +105,7 @@ function( Backbone,
 		showPicks: function( weekid ) {
 			$('#content').hide();
 			$('#loading').show();
+			$('#logout').show();
 
 			this.fetchPicks( weekid, function( data ) {
 				var picksView = new PicksView({ week: weekid, model: new PicksModel({ picks:data }) });
@@ -118,7 +120,8 @@ function( Backbone,
 		showAdmin: function( weekid ) {
 			$('#content').hide();
 			$('#loading').show();
-
+			$('#logout').show();
+			
 			weekid = weekid || Utils.computeWeek();
 			var me = this;
 			this.fetchAdminWeek( weekid, function( data ) {
