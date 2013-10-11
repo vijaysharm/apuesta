@@ -8,17 +8,53 @@ define([
 		scoreTemplate: _.template($('#score').html()),
 		commentTemplate: _.template($('#game-comment-block').html()),
 		pager: _.template($('#pager').html()),
+		selectorTemplate: _.template($('#team-selector').html()),
+		events: {
+			'click input': 'handleTeamSelect',
+		},
+		handleTeamSelect: function(e) {
+			var data = this.model.get('game');
+			var input = $(e.target);
+			var team = input.attr('id');
+			var gameid = data.id;
+			
+			var away = data.away.team.toLowerCase();
+			var home = data.home.team.toLowerCase();
+			var labels = input.closest('div.btn-group').find('label');
+
+			labels.removeClass(home).removeClass(away).removeClass('pass');
+			input.closest('label').addClass(team.toLowerCase());
+
+			team = team === 'PASS' ? undefined : team;
+			var userpick = _.find(data.picks,function( pick ) {
+				return data.user.id === pick.user.id;
+			});
+			if ( userpick ) {
+				userpick.pick = team ? team : '';
+				$('#pickstable').html(this.renderPicks());
+			}
+			this.trigger('save',{
+				pick: team,
+				gameid: gameid,
+				week: data.week
+			});
+		},		
 		addTeamPick: function() {
-			// var pick = this.model.get('pick');
+			var data = this.model.get('game');
+			var userpick = _.find(data.picks,function( pick ) {
+				return data.user.id === pick.user.id;
+			});
+			var pick = userpick.pick;
+
 			// var winneragainstspread = this.model.get('winneragainstspread');
-			var date = new Date(this.model.get('date'));
+			var date = new Date(data.date);
 			var now = new Date();
 
-			var away = this.model.get('away');
-			var home = this.model.get('home');
+			var away = data.away;
+			var home = data.home;
 
-			// var pickline
-			// if ( now > date ) {
+			var pickline
+			if ( now > date ) {
 			// 	if ( pick ) {
 			// 		pickline = $('<h4>').append("You picked ")
 			// 			.append(this.spanTemplate({
@@ -32,48 +68,79 @@ define([
 			// 	} else {
 			// 		pickline = $('<h4>').append("You passed on this game");
 			// 	}
-			// } else {
-			// 	var selectordata = {
-			// 		pass : {
-			// 			data:'PASS',
-			// 			label:'Pass',
-			// 			style:'team-selection highlight-invert'
-			// 		},
-			// 		home: {
-			// 			data: home.team,
-			// 			label: home.team,
-			// 			style: 'team-selection highlight-invert'
-			// 		},
-			// 		away: {
-			// 			data: away.team,
-			// 			label: away.team,
-			// 			style: 'team-selection highlight-invert'
-			// 		}
-			// 	}	
+			} else {
+				var selectordata = {
+					pass : {
+						data:'PASS',
+						label:'Pass',
+						style:'team-selection highlight-invert'
+					},
+					home: {
+						data: home.team,
+						label: home.team,
+						style: 'team-selection highlight-invert'
+					},
+					away: {
+						data: away.team,
+						label: away.team,
+						style: 'team-selection highlight-invert'
+					}
+				}	
 
-			// 	var property;
-			// 	var val;
-			// 	if ( pick ) {
-			// 		if ( pick === home.team ) {
-			// 			property = 'home';
-			// 			val = home.team.toLowerCase();
-			// 		} else {
-			// 			property = 'away';
-			// 			val = away.team.toLowerCase();
-			// 		}
-			// 	} else {
-			// 		property = 'pass';
-			// 		val = 'pass';
-			// 	}
-			// 	selectordata[property].style = 
-			// 		selectordata[property].style + ' ' + val;
+				var property;
+				var val;
+				if ( pick ) {
+					if ( pick === home.team ) {
+						property = 'home';
+						val = home.team.toLowerCase();
+					} else {
+						property = 'away';
+						val = away.team.toLowerCase();
+					}
+				} else {
+					property = 'pass';
+					val = 'pass';
+				}
+				selectordata[property].style = 
+					selectordata[property].style + ' ' + val;
 
-			// 	pickline = $('<span>',{'class':'pick'})
-			// 		.append($('<h4>').text('Pick: '))
-			// 		.append(this.selectorTemplate(selectordata));	
-			// }
+				pickline = $('<span>',{'class':'pick'})
+					.append($('<h4>').text('Pick: '))
+					.append(this.selectorTemplate(selectordata));	
+			}
 			
 			return pickline;
+		},
+		renderPicks: function() {
+			var data = this.model.get('game');
+			var table = $('<table>',{"class": 'table'});
+			var userrow = $('<tr>');
+			var pickrow = $('<tr>');
+			for ( var i in data.picks ) {
+				var userpick = data.picks[i];
+				userrow.append($('<th>').text(userpick.user.name));
+				
+				var p = null;
+				var pickcell = $('<td>');
+				if ( userpick.pick ) {
+					// TODO: yuck. i should either use the path to the image itself from the data
+					// or have the client side always work images (and remove it from the DB)
+					p = $('<img>',{src: '/images/' + userpick.pick + '.png'});
+					if ( data.winneragainstspread ) {
+						var win = data.winneragainstspread === userpick.pick;
+						pickcell.addClass( win ? 'win' : 'lose' );
+					}
+				} else {
+					p = $('<h4>',{'class': 'text-center', text: 'pass'});
+					pickcell.addClass( 'pass-invert' );
+					pickcell.css( 'vertical-align', 'middle' );
+				}
+				pickrow.append(pickcell.append(p));
+			}
+			table.append(userrow);
+			table.append(pickrow);
+
+			return table;
 		},
 		render: function() {
 			var data = this.model.get('game');
@@ -86,13 +153,12 @@ define([
 				.append($('<ul>',{'class':'pagination'})
 					.append($('<li>').append(back)));
 
-			console.log(JSON.stringify(data.nextgame));
 			var pagerel = $('<div>',{'class': 'col-md-4 col-md-offset-3'})
 				.append(this.pager({
 						url: 'game',
 						previousweek: data.previousgame.id,
 						nextweek: data.nextgame.id,
-						label: 'Next: ' + data.nextgame.away + '@' + data.nextgame.home
+						label: data.nextgame.away + '@' + data.nextgame.home
 					}));
 
 			var controlel = $('<div>',{'class':'container'})
@@ -135,38 +201,15 @@ define([
 				} else {
 					col.text('Even');
 				}
-				// col.append(this.addTeamPick());
+				col.append(this.addTeamPick());
 				container.append(spreadel);
 			}
 
 			if ( data.picks ) {
-				var table = $('<table>',{"class": 'table'});
-				var userrow = $('<tr>');
-				var pickrow = $('<tr>');
-				for ( var i in data.picks ) {
-					var userpick = data.picks[i];
-					userrow.append($('<th>').text(userpick.user.name));
-					
-					var p = null;
-					var pickcell = $('<td>');
-					if ( userpick.pick ) {
-						// TODO: yuck. i should either use the path to the image itself from the data
-						// or have the client side always work images (and remove it from the DB)
-						p = $('<img>',{src: '/images/' + userpick.pick + '.png'});
-						if ( data.winneragainstspread ) {
-							var win = data.winneragainstspread === userpick.pick;
-							pickcell.addClass( win ? 'win' : 'lose' );
-						}
-					} else {
-						p = $('<h4>',{'class': 'text-center', text: 'pass'});
-						pickcell.addClass( 'pass-invert' );
-						pickcell.css( 'vertical-align', 'middle' );
-					}
-					pickrow.append(pickcell.append(p));
-				}
-				table.append(userrow);
-				table.append(pickrow);
-				container.append($('<div>',{'class':'row'}).append(table));
+				container.append($('<div>',{
+					'class':'row',
+					'id': 'pickstable'
+				}).html(this.renderPicks()));
 			}
 
 			var comments = $('<div>', {'id':'comments','class':'row'})

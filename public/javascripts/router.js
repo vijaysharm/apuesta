@@ -87,6 +87,11 @@ function( Backbone,
 						gameView.addComment(result);
 					});
 				},me);
+				gameView.on('save', function(data) { 
+					this.updateSelectedTeam(data,function(result){
+						console.log('pick saved!');
+					});
+				}, me);
 				$('#content').html(gameView.render().el);
 				$('#loading').hide();
 				$('#content').show();

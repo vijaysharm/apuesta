@@ -111,7 +111,11 @@ var formatGameByIdResponse = function( user, teams, game, picks, metadata, users
 				data: teams[game.away]
 			},
 			previousgame: game.previous,
-			nextgame: game.next
+			nextgame: game.next,
+			user: {
+				id: user._id,
+				name: user.name
+			}
 		};
 
 		var outcomeagainstspread;

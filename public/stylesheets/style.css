@@ -183,6 +183,7 @@ td {
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
 	border-radius: 0;
+	margin-right: 2px;
 }
 
 .pagination > li:last-child > a,
