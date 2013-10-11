@@ -29,13 +29,13 @@ exports.authenticate = function( req, res, next ) {
 	if( req.session.user ) {
 		next();
 	} else {
-		// res.json(401, {error:'User not found'});
+		res.json(401, {error:'User not found'});
 
 		// TODO: For testing only. 
-		users.findUser('vijay.sharm@gmail.com', function( user ) {
-			req.session.user = user
-			next();
-		});
+		// users.findUser('vijay.sharm@gmail.com', function( user ) {
+		// 	req.session.user = user
+		// 	next();
+		// });
 		// TODO: For testing only. 
 	}
 };

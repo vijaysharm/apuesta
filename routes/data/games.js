@@ -96,13 +96,13 @@ exports.getGamesByWeek = function( user, weekid, res ) {
 	});
 };
 
-var formatGameByIdResponse = function( teams, game, picks, metadata, users, res ) {
+var formatGameByIdResponse = function( user, teams, game, picks, metadata, users, res ) {
 	var data = {};
 	if ( game ) {
 		data = {
 			id: game.id,
 			week: game.week,
-			home: { 
+			home: {
 				team: game.home,
 				data: teams[game.home]
 			},
@@ -157,7 +157,7 @@ exports.getGameById = function( user, game, res ) {
 				metadatadb.findOne({ gameid:gameid }, function(err,data) {
 					var teams = require('./teams').team;
 					var storedgame = require('./schedule').getGameById(gameid);
-					formatGameByIdResponse( teams, storedgame, picks, data, users, res );
+					formatGameByIdResponse( user, teams, storedgame, picks, data, users, res );
 				});
 			});
 		});

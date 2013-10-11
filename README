@@ -25,8 +25,6 @@ TODO
 * Move team data from server to client in a utils
   package (reduces the amount of traffic is sent 
   over the wire)
-* Make the left most column of the picks page clickable
-  to see the game info
 * Fix the game info page, which is scrolled all the
   to the bottom, if i choose a game from this week
   from the bottom of the page (makes the game info
@@ -44,3 +42,6 @@ TODO
 * Have a way of getting scores from an external source
 * Have a way of getting spreads from an external source
 * Fix the "Please ensure" warning message from Mongodb
+* BUG: When you click the 'back button' from the games view
+  it always takes you to the games list, It should take you
+  to the league view if you came from there.
