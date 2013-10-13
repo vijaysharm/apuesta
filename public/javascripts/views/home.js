@@ -194,12 +194,12 @@ define([
 					.append($('<li>')
 						.append($('<a>',{href:'/#picks/' + week}).text("League Picks"))));
 
-			var pagerel = $('<div>',{'class': 'col-md-4 col-md-offset-3'})
+			var pagerel = $('<div>',{'class': 'col-md-5 col-md-offset-2'})
 				.append(this.pager({
 						url: 'week',
 						previousweek: Utils.prevWeek(week),
 						nextweek: Utils.nextWeek(week),
-						label: 'Week ' + Utils.nextWeek(week)
+						label: 'Next: Week ' + Utils.nextWeek(week)
 					}));
 			var controlel = $('<div>',{'class':'container'})
 				.append($('<div>',{'class':'row'})

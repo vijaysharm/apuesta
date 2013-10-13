@@ -153,12 +153,12 @@ define([
 				.append($('<ul>',{'class':'pagination'})
 					.append($('<li>').append(back)));
 
-			var pagerel = $('<div>',{'class': 'col-md-4 col-md-offset-3'})
+			var pagerel = $('<div>',{'class': 'col-md-5 col-md-offset-2'})
 				.append(this.pager({
 						url: 'game',
 						previousweek: data.previousgame.id,
 						nextweek: data.nextgame.id,
-						label: data.nextgame.away + '@' + data.nextgame.home
+						label: 'Next: ' + data.nextgame.away + '@' + data.nextgame.home
 					}));
 
 			var controlel = $('<div>',{'class':'container'})

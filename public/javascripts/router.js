@@ -1,4 +1,5 @@
 define([
+	'underscore',
 	'backbone',
 	'views/login',
 	'collections/home',
@@ -10,7 +11,8 @@ define([
 	'views/admin',
 	'utils'
 ], 
-function( Backbone,
+function( _,
+		  Backbone,
 		  LoginView,
 		  HomeCollection,
 		  HomeView,
@@ -31,13 +33,14 @@ function( Backbone,
 			'admin/:weekid': 'showAdmin',
 			'admin': 'showAdmin',
 		},
+		logoutbar: _.template($('#logoutbar').html()),
 		home: function() {
 			this.showWeek( Utils.computeWeek() );
 		},
 		login: function() {
 			$('#content').hide();
 			$('#loading').show();
-			$('#logout').hide();
+			$('#logout').html('');
 			var me = this;
 			var loginView = new LoginView();
 			loginView.on('login', function(data) {
@@ -54,7 +57,8 @@ function( Backbone,
 		showWeek: function( weekid ) {
 			$('#content').hide();
 			$('#loading').show();
-			$('#logout').show();
+			$('#logout').html(this.logoutbar({}));
+
 			var me = this;
 			this.fetchWeek( weekid, function( data ) {
 				var homeView = new HomeView({ 
@@ -74,7 +78,7 @@ function( Backbone,
 		showGame: function( gameid ) {
 			$('#content').hide();
 			$('#loading').show();
-			$('#logout').show();
+			$('#logout').html(this.logoutbar({}));
 
 			var me = this;
 			this.fetchGame( gameid, function( data ) {
@@ -105,7 +109,7 @@ function( Backbone,
 		showPicks: function( weekid ) {
 			$('#content').hide();
 			$('#loading').show();
-			$('#logout').show();
+			$('#logout').html(this.logoutbar({}));
 
 			this.fetchPicks( weekid, function( data ) {
 				var picksView = new PicksView({ week: weekid, model: new PicksModel({ picks:data }) });
@@ -120,7 +124,7 @@ function( Backbone,
 		showAdmin: function( weekid ) {
 			$('#content').hide();
 			$('#loading').show();
-			$('#logout').show();
+			$('#logout').html(this.logoutbar({}));
 			
 			weekid = weekid || Utils.computeWeek();
 			var me = this;

@@ -69,7 +69,7 @@ var initializeSchedule = function( db, callback ) {
 			p = picks.getInMemoryPick('3',i.toString(),gameId);
 			if ( p ) {
 				storedpicks.push({
-					userid: 'ralston.mcKenzie@statcan.gc.ca',
+					userid: 'ralston.mckenzie@statcan.gc.ca',
 					gameid: gameId,
 					pick: p,
 					week: i

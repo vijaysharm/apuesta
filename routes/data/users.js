@@ -13,7 +13,7 @@ var users = [
 		league: 'statscan'
 	}, 
 	{
-		_id: 'ralston.mcKenzie@statcan.gc.ca',
+		_id: 'ralston.mckenzie@statcan.gc.ca',
 		name: 'Ralston',
 		role: 'user',
 		league: 'statscan'

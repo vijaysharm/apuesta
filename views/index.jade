@@ -65,12 +65,14 @@ html(lang="en")
       span(class="score")
         <%= score.home %>
 
-  div(id="logout", style="display: none;")
+  script(type="text/template", id="logoutbar")
     div(class="row")
       div(class="col-md-12")
         div(class="pull-right")
           a(href="/help.html", target="_blank", class='help') Need Help?
           a(href="/logout", class='help') Logout
+
+  div(id="logout")
   
   div(class="row")
     div(class="jumbotron")
