@@ -111,6 +111,43 @@ var initializeSchedule = function( db, callback ) {
 	});
 };
 
+var fixRalston = function( db, callback ) {
+	var usersdb = db.collection('users');
+	var versiondb = db.collection('properties');
+	var picksdb = db.collection('picks');
+	var commentsdb = db.collection('comments');
+
+	var ralston = {
+		_id: 'ralston.mckenzie@statcan.gc.ca',
+		name: 'Ralston',
+		role: 'user',
+		league: 'statscan'
+	};
+	var oldmail = 'ralston.mcKenzie@statcan.gc.ca';
+	var newmail = 'ralston.mckenzie@statcan.gc.ca';
+	var updateoptions = {multi:true};
+	usersdb.insert(ralston,function(err,result){
+		if( err ) throw err;
+		usersdb.remove({_id:oldmail}, function(err, result) {
+			if( err ) throw err;
+			console.log('updated user. Now updating picks');
+			picksdb.update({userid:oldmail},{$set:{userid:newmail}},updateoptions,function(err,result) {
+				if( err ) throw err;
+				console.log('picks updated. Updating comments');
+				commentsdb.update({userid:oldmail},{$set:{userid:newmail}},updateoptions,function(err,result) {
+					if( err ) throw err;
+					console.log('comments updated. Updating version');
+					versiondb.update({},{$set:{version:2.0}},function(err,version) {
+						if( err ) throw err;
+						console.log('user updating finished');
+						callback();
+					});
+				});
+			});
+		});
+	});
+};
+
 exports.execute = function( callback ) {
 	var end = function() {
 		callback();
@@ -123,8 +160,9 @@ exports.execute = function( callback ) {
 
 			if ( version == null ) {
 				initializeUsers( db, end );
+			} else if ( version.version === 1.0 ) {
+				fixRalston( db, end );
 			} else {
-				console.log('Data has already been migrated.');
 				end();
 			}
 		});
