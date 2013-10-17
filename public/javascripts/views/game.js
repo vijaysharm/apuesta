@@ -49,6 +49,7 @@ define([
 			// var winneragainstspread = this.model.get('winneragainstspread');
 			var date = new Date(data.date);
 			var now = new Date();
+			now.setHours(now.getHours() - 4);
 
 			var away = data.away;
 			var home = data.home;
