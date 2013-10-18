@@ -176,6 +176,10 @@ td {
 	padding-top: 8px;
 }
 
+.middle-align {
+	vertical-align: middle;
+}
+
 @media (max-width: 992px) {
 		h1 {
 		font-size: 38px;
@@ -235,6 +239,23 @@ td {
 	.selector-teams > label {
 		width: 33%;
 		padding: 16px;
+	}
+
+	table img {
+		width: 36px;
+		height: 36px;
+	}
+
+	.picks-team {
+		padding: 0;
+	}
+
+	.table > tbody > tr > td {
+		padding: 0;
+	}
+
+	.table > tbody > tr > th {
+		padding: 0;
 	}
 }
 

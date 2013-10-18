@@ -55,7 +55,7 @@ define(['underscore','backbone','utils'], function(_,Backbone,Utils) {
 				for ( var j in game.picks ) {
 					var userpick = game.picks[j];
 					var p = null;
-					var pickcell = $('<td>');
+					var pickcell = $('<td>', {'class':'middle-align'});
 					outcome[userpick.user] = outcome[userpick.user] || {};
 					outcome[userpick.user].win = outcome[userpick.user].win || 0;
 					outcome[userpick.user].lose = outcome[userpick.user].lose || 0;
@@ -77,7 +77,6 @@ define(['underscore','backbone','utils'], function(_,Backbone,Utils) {
 						pickcell.addClass( 'pass-invert' );
 						pickcell.css( 'vertical-align', 'middle' );
 					}
-
 					row.append(pickcell.append(p));
 				}
 				// table.append(row);

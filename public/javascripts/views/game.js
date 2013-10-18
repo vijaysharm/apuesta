@@ -131,6 +131,7 @@ define([
 					if ( data.winneragainstspread ) {
 						var win = data.winneragainstspread === userpick.pick;
 						pickcell.addClass( win ? 'win' : 'lose' );
+						pickcell.css( 'vertical-align', 'middle' );
 					}
 				} else {
 					p = $('<h4>',{'class': 'text-center', text: 'pass'});
