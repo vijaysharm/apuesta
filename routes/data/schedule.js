@@ -358,7 +358,7 @@ exports.getGameById = function( gameId ) {
 exports.getweekByGameId = function( gameid ) {
 	for ( var i in week ) {
 		var w = week[i];
-		var game = findGameInWeek( w, gameId );
+		var game = findGameInWeek( w, gameid );
 		if ( game ) {
 			return i;
 		}

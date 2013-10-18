@@ -87,7 +87,6 @@ function( _,
 					model: new GameModel({ game:data })
 				});
 				gameView.on('comment',function(comment){
-					console.log(comment.gameid + ": " + comment.comment);
 					me.addComment(comment, function(result){
 						gameView.addComment(result);
 					});
