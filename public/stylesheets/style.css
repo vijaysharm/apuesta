@@ -176,8 +176,8 @@ td {
 	padding-top: 8px;
 }
 
-@media (max-width: 768px) {
-	h1 {
+@media (max-width: 992px) {
+		h1 {
 		font-size: 38px;
 	}
 
@@ -210,11 +210,6 @@ td {
 		text-align: center;
 	}
 
-	.team-img {
-		width: 75px;
-		height: 75px;
-	}
-
 	.teamname > h4 {
 		font-size: 20px;
 	}
@@ -240,6 +235,13 @@ td {
 	.selector-teams > label {
 		width: 33%;
 		padding: 16px;
+	}
+}
+
+@media (max-width: 768px) {
+	.team-img {
+		width: 75px;
+		height: 75px;
 	}
 }
 
