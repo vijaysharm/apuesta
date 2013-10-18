@@ -135,12 +135,12 @@ function( _,
 				});
 				adminView.on('save-spread', function(data) { 
 					this.updateSpreads(data,function(result){
-						console.log('spread saved!');
+						Backbone.history.navigate('/#');
 					});
 				}, me);
 				adminView.on('save-score', function(data) { 
 					this.updateScores(data,function(result){
-						console.log('scores saved!');
+						Backbone.history.navigate('/#');
 					});
 				}, me);
 

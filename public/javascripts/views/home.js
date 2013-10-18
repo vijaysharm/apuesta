@@ -114,9 +114,10 @@ define([
 					.append(this.selectorTemplate(selectordata));	
 			}
 			
-			return pickline;
+			var col = $('<div>',{'class':'col-md-12'}).append(pickline);
+			return $('<div>',{'class':'row spread-pick-row'}).append(col);
 		},
-		addTeamSpread: function(team, spread, container) {
+		addTeamSpread: function(team, spread) {
 			var winneragainstspread = this.model.get('winneragainstspread');
 
 			var spreadline = $('<h4>').append(this.spanTemplate({
@@ -129,7 +130,8 @@ define([
 				spreadline.append(text+ ' the spread');
 			}
 
-			container.append(spreadline);
+			var col = $('<div>',{'class':'col-md-12'}).append(spreadline);
+			return $('<div>',{'class':'row'}).append(col);
 		},
 		render: function() {
 			var spread = this.model.get('spread');
@@ -137,25 +139,25 @@ define([
 			var home = this.model.get('home');
 			var score = this.model.get('score');
 		
-			var awayel = $('<div>',{'class':'col-md-4'})
+			var awayel = $('<div>',{'class':'col-md-4 col-xs-4'})
 				.append(this.teamTemplate({
 					team: away
 				}));
-			var homeel = $('<div>',{'class':'col-md-4'})
+			var homeel = $('<div>',{'class':'col-md-4 col-xs-4'})
 				.append(this.teamTemplate({
 					team: home
 				}));
 
 			var middleel = null;
 			if ( score ) {
-				middleel = $('<div>',{'class':'col-md-4 scores text-center'})
+				middleel = $('<div>',{'class':'col-md-4 col-xs-4 scores text-center'})
 					.html(this.scoreTemplate({score:score}));
 			} else {
-				middleel = $('<div>',{"class": 'col-md-4 text-center'})
+				middleel = $('<div>',{"class": 'col-md-4 col-xs-4 text-center'})
 					.html('<h2>@<h2>');
 			}
 
-			var spacing = spread ? 'col-md-6' : 'col-md-4 col-md-offset-4'
+			var spacing = spread ? 'col-md-5 col-md-offset-1' : 'col-md-4 col-md-offset-4'
 			var row = $('<div>',{"class": spacing})
 				.append($('<div>',{"class": 'row'})
 							.append(awayel)
@@ -164,13 +166,15 @@ define([
 			this.$el.append(row);
 
 			if ( spread ) {
-				var col = $('<div>',{"class":'col-md-6'});
+				var col = $('<div>',{"class":'col-md-5 col-md-offset-1 spread-row'});
 				var home = home.team;
 				var away = away.team;
 				if ( spread < 0 ) {
-					this.addTeamSpread(away, spread, col);
+					var a = this.addTeamSpread(away, spread);
+					col.append(a);
 				} else if ( spread > 0 ) {
-					this.addTeamSpread(home, spread, col);
+					var a = this.addTeamSpread(home, spread);
+					col.append(a);
 				} else {
 					col.append($('<h4>').text('Even'));
 				}

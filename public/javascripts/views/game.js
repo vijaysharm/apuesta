@@ -110,7 +110,8 @@ define([
 					.append(this.selectorTemplate(selectordata));	
 			}
 			
-			return pickline;
+			var col = $('<div>',{'class':'col-md-12'}).append(pickline);
+			return $('<div>',{'class':'row spread-pick-row'}).append(col);
 		},
 		renderPicks: function() {
 			var data = this.model.get('game');
@@ -193,12 +194,16 @@ define([
 					var away = data.away.team;
 					var span = $('<span>',{"class":away.toLowerCase()}).text(away); 
 					span.addClass('teamid');
-					col.append($('<h3>').append(span).append(" favoured by " + Math.abs(spread)));
+					var h3 = $('<h3>').append(span).append(" favoured by " + Math.abs(spread));
+					var spreadline = $('<div>',{'class':'row'}).append($('<div>',{'class':'col-md-12'}).append(h3));
+					col.append(spreadline);
 				} else if ( spread > 0 ) {
 					var home = data.home.team;
 					var span = $('<span>',{"class":home.toLowerCase()}).text(home); 
 					span.addClass('teamid');
-					col.append($('<h3>').append(span).append(" favoured by " + Math.abs(spread)));
+					var h3 = $('<h3>').append(span).append(" favoured by " + Math.abs(spread));
+					var spreadline = $('<div>',{'class':'row'}).append($('<div>',{'class':'col-md-12'}).append(h3));
+					col.append(spreadline);
 				} else {
 					col.text('Even');
 				}

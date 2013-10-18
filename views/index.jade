@@ -11,9 +11,9 @@ html(lang="en")
       div(class="col-md-6 col-md-offset-2")
         h3(class='padding-16') Login to NFL Picks
     div(class='row')
-      div(class="col-md-6 col-md-offset-2")
+      div(class="col-md-6 col-md-offset-2 col-xs-9 col-xs-offset-0")
         input(type="text" class='form-control' id="username" size="15" placeHolder="Username")
-      div(class="col-md-2")
+      div(class="col-md-2 col-xs-3")
         button(type="submit" class='btn btn-default' id="loginButton") Login
 
   script(type="text/template", id="game-comment-block")
@@ -26,7 +26,7 @@ html(lang="en")
 
   //- team selector
   script(type="text/template", id="team-selector")
-    <div class="btn-group" data-toggle="buttons">
+    <div class="btn-group selector-teams" data-toggle="buttons">
     <label class="btn <%= away.style %>">
     <input type="radio" name="options" id="<%= away.data %>"><%= away.label %>
     </label>
@@ -54,7 +54,7 @@ html(lang="en")
   //- game page
   script(type="text/template", id="team")
     div(class="team")
-        <img src="<%= team.data.img100 %>">
+        <img class='team-img' src="<%= team.data.img100 %>">
         div
           span(class="teamname")
             h4 <%= team.data.shortname %>

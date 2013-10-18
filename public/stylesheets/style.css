@@ -172,6 +172,77 @@ td {
 	border: 2px solid #eef0f0;
 }
 
+.spread-pick-row {
+	padding-top: 8px;
+}
+
+@media (max-width: 768px) {
+	h1 {
+		font-size: 38px;
+	}
+
+	h2 {
+		font-size: 30px;
+	}
+
+	h3 {
+		font-size: 24px;
+	}
+
+	.padding-48 {
+		padding: 24px;
+	}
+
+	.padding-16 {
+		padding: 8px;
+	}
+
+	.game-row {
+		padding: 16px;
+		margin-bottom: 32px;
+	}
+
+	.help {
+		padding: 4px 8px;
+	}
+
+	.spread-row {
+		text-align: center;
+	}
+
+	.team-img {
+		width: 75px;
+		height: 75px;
+	}
+
+	.teamname > h4 {
+		font-size: 20px;
+	}
+
+	.score {
+		padding: 4px 4px;
+		margin: 0 4px;
+	}
+
+	.row {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+
+	.pick > h4 {
+		display: none;
+	}
+
+	.selector-teams {
+		width: 100%;
+	}
+
+	.selector-teams > label {
+		width: 33%;
+		padding: 16px;
+	}
+}
+
 /* bootstrap pagination override */
 .pagination > li > a,
 .pagination > li > span {
