@@ -126,7 +126,7 @@ var fixRalston = function( db, callback ) {
 	var oldmail = 'ralston.mcKenzie@statcan.gc.ca';
 	var newmail = 'ralston.mckenzie@statcan.gc.ca';
 	var updateoptions = {multi:true};
-	usersdb.insert(ralston,function(err,result){
+	usersdb.insert(ralston,function(err,result) {
 		if( err ) throw err;
 		usersdb.remove({_id:oldmail}, function(err, result) {
 			if( err ) throw err;
@@ -139,10 +139,34 @@ var fixRalston = function( db, callback ) {
 					console.log('comments updated. Updating version');
 					versiondb.update({},{$set:{version:2.0}},function(err,version) {
 						if( err ) throw err;
-						console.log('user updating finished');
+						console.log('fixRalston finished');
 						callback();
 					});
 				});
+			});
+		});
+	});
+};
+
+var addArunMovePL = function( db, callback ) {
+	var usersdb = db.collection('users');
+	var versiondb = db.collection('properties');
+	
+	var arun = {
+		_id: 'arun.b.nepali@gmail.com',
+		name: 'Arun',
+		role: 'user',
+		league: 'statscan'
+	};
+
+	usersdb.insert(arun,function(err,result) {
+		if( err ) throw err;
+		usersdb.update({_id:'pierre-louis.venne@statcan.gc.ca'},{$unset:{league:''}}, function(err, result) {
+			if( err ) throw err;
+			versiondb.update({},{$set:{version:3.0}},function(err,version) {
+				if( err ) throw err;
+				console.log('addArunMovePL finished');
+				callback();
 			});
 		});
 	});
@@ -162,6 +186,8 @@ exports.execute = function( callback ) {
 				initializeUsers( db, end );
 			} else if ( version.version === 1.0 ) {
 				fixRalston( db, end );
+			} else if ( version.version === 2.0 ) {
+				addArunMovePL( db, end );
 			} else {
 				end();
 			}

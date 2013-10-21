@@ -283,7 +283,7 @@ var formatCommentsByGameIdResponse = function(users, comments, res) {
 		result.push({
 			comment: comment.comment,
 			gameid: comment.gameid,
-			user: user.name,
+			user: user.name ? user.name : 'some guy',
 			date: comment._id.getTimestamp()
 		});
 	});

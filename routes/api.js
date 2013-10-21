@@ -54,6 +54,40 @@ var addCommentsByGameId = function( req, res ) {
 	games.addCommentByGameId(user, gameid, comment, res);
 };
 
+var addUser = function( req, res ) {
+	var user = {
+		email: req.body.email,
+		name: req.body.name,
+		role: 'user',
+		league: 'statscan'
+	};
+
+	res.json(404, {error:'nothing here.'});
+};
+
+var editUser = function( req, res ) {
+	// This needs to be pretty sophisticated.
+	// I need to delete the old user and update all places where that user could have done stuff
+	// this is because i made the _id of a user the email, which is immutable. So if i want to 
+	// support editing email address, i'll have to do the above
+	// maybe i want to be able to edit a user's pick as well.. res.json(404, {error:'nothing here.'});
+
+	// var userid = email: req.body.email;
+	// var user = {
+	// 	name: req.body.name,
+	// 	role: 'user',
+	// 	league: 'statscan'
+	// };
+
+	// games.addUser(user,res);
+	res.json(404, {error:'nothing here.'});
+};
+
+var getUsers = function( req, res ) {
+	// var league = 'statscan';
+	res.json(404, {error:'nothing here.'});
+};
+
 exports.install = function( app ) {
 	app.get( '/api/weeks/:id', login.authenticate, getGamesByWeek );
 	app.get( '/api/games/:id', login.authenticate, getGameById );
@@ -65,4 +99,8 @@ exports.install = function( app ) {
 	app.get( '/api/admin/weeks/:id', login.authenticate, checkAdmin, getGamesByWeek );
 	app.post( '/api/admin/scores', login.authenticate, checkAdmin, updateScores );
 	app.post( '/api/admin/spreads', login.authenticate, checkAdmin, updateSpreads );
+
+	app.get( '/api/admin/users', login.authenticate, checkAdmin, getUsers );
+	app.post( '/api/admin/adduser', login.authenticate, checkAdmin, addUser );
+	app.post( '/api/admin/edituser', login.authenticate, checkAdmin, editUser );
 };
