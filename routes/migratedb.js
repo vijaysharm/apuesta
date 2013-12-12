@@ -1,11 +1,43 @@
 var connection = require('./database');
 var _ = require('underscore');
 
-var users = require('./data/users').users;
 var teams = require('./data/teams').team;
 var schedule = require( './data/schedule');
 var picks = require('./data/picks');
 var metadata = require('./data/gamesmetadata').metadata;
+
+var users = [
+	{
+		_id: 'krishna.tiwari@statcan.gc.ca',
+		name: 'Krishna',
+		role: 'user',
+		league: 'statscan'
+	}, 
+	{
+		_id: 'pierre-louis.venne@statcan.gc.ca',
+		name: 'Pierre-Louis',
+		role: 'user',
+		league: 'statscan'
+	}, 
+	{
+		_id: 'ralston.mckenzie@statcan.gc.ca',
+		name: 'Ralston',
+		role: 'user',
+		league: 'statscan'
+	},
+	{
+		_id: 'sunil.bajaj@aandc-aadnc.gc.ca',
+		name: 'Sunil',
+		role: 'user',
+		league: 'statscan'
+	}, 
+	{
+		_id: 'vijay.sharm@gmail.com',
+		name: 'Vijay',
+		role: 'admin',
+		league: 'statscan'
+	}, 
+];
 
 var initializeUsers = function( db, callback ) {
 	console.log( 'migration started.' );

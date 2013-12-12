@@ -32,7 +32,7 @@ exports.authenticate = function( req, res, next ) {
 		res.json(401, {error:'User not found'});
 
 		// TODO: For testing only. 
-		// users.findUser('vijay.sharm@gmail.com', function( user ) {
+		// users.findUser('<insert some user>', function( user ) {
 		// 	req.session.user = user
 		// 	next();
 		// });
