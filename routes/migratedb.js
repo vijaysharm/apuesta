@@ -204,6 +204,28 @@ var addArunMovePL = function( db, callback ) {
 	});
 };
 
+function removeRalstonFixWeek16Metadata( db, callback ) {
+	var usersdb = db.collection('users');
+	var versiondb = db.collection('properties');
+	var metadatadb = db.collection('metadata');	
+
+	usersdb.update({_id:'ralston.mckenzie@statcan.gc.ca'},{$unset:{league:''}}, function(err, result) {
+		if( err ) throw err;
+		metadatadb.update({gameid:240},{$set:{date:new Date('December 22, 2013, 20:40:00')}}, function(err, result) {
+			if( err ) throw err;
+			var update = {$set:{week:16, date:new Date('December 22, 2013, 20:40:00')}};
+			metadatadb.findAndModify({ gameid:231 }, [['gameid','1']], update, { upsert:true, 'new':true }, function(err, result) {
+				if( err ) throw err;
+				versiondb.update({},{$set:{version:4.0}},function(err,version) {
+					if( err ) throw err;
+					console.log('removeRalstonFixWeek16Metadata finished');
+					callback();
+				});
+			});
+		});
+	});
+}
+
 exports.execute = function( callback ) {
 	var end = function() {
 		callback();
@@ -220,6 +242,8 @@ exports.execute = function( callback ) {
 				fixRalston( db, end );
 			} else if ( version.version === 2.0 ) {
 				addArunMovePL( db, end );
+			} else if ( version.version === 3.0 ) {
+				removeRalstonFixWeek16Metadata( db, end );
 			} else {
 				end();
 			}
