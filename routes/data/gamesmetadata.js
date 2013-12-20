@@ -268,7 +268,7 @@ var metadata = {
 	237 : { date: new Date('December 22, 2013, 16:25:00') },
 	238 : { date: new Date('December 22, 2013, 16:25:00') },
 	239 : { date: new Date('December 22, 2013, 20:30:00') },
-	240 : { date: new Date('December 33, 2013, 20:40:00') },
+	240 : { date: new Date('December 22, 2013, 20:40:00') },
 
 	// Week 17
 	241 : { date: new Date('December 29, 2013, 13:00:00') },
