@@ -286,7 +286,19 @@ var metadata = {
 	253 : { date: new Date('December 29, 2013, 16:25:00') },
 	254 : { date: new Date('December 29, 2013, 16:25:00') },
 	255 : { date: new Date('December 29, 2013, 16:25:00') },
-	256 : { date: new Date('December 29, 2013, 16:25:00') }
+	256 : { date: new Date('December 29, 2013, 16:25:00') },
+
+	// week 18
+	257 : { date: new Date('January 3, 2014, 16:25:00') },
+	258 : { date: new Date('January 3, 2014, 16:25:00') },
+	259 : { date: new Date('January 3, 2014, 16:25:00') },
+	260 : { date: new Date('January 3, 2014, 16:25:00') },
+
+	// week 19
+	261 : { date: new Date('January 11, 2014, 16:35:00') },
+	262 : { date: new Date('January 11, 2014, 20:15:00') },
+	263 : { date: new Date('January 12, 2014, 13:05:00') },
+	264 : { date: new Date('January 12, 2014, 16:40:00') }
 };
 
 exports.metadata = metadata;

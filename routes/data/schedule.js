@@ -308,6 +308,21 @@ week['17'] = [
 	{ id: 256, away: 'STL', home: 'SEA' }
 ];
 
+week['18'] = [
+	{ id: 257, away: 'KC', home: 'IND' },
+	{ id: 258, away: 'SD', home: 'CIN' },
+	{ id: 259, away: 'SF', home: 'GB' },
+	{ id: 260, away: 'NO', home: 'PHI' }		
+];
+
+
+week['19'] = [
+	{ id: 261, away: 'NO', home: 'SEA' },
+	{ id: 262, away: 'IND', home: 'NE' },
+	{ id: 263, away: 'SF', home: 'CAR' },
+	{ id: 264, away: 'SD', home: 'DEN' }	
+];
+
 /**
  * id should be a string
  */
