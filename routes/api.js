@@ -1,106 +1,50 @@
 var login = require('./login');
 var games = require('./data/games');
+var impl = require('./data/impl');
+var connection = require('./database');
 
 var checkAdmin = function( req, res, next ) {
-	var role = req.session.user.role;
+	var role = req.user.role;
 	if ( role === 'admin')
 		next();
 	else
-		res.json({ error:'not admin' });
+		res.json(403, {message:'not admin'});
 };
 
-var getGamesByWeek = function( req, res ) {
-	var week = req.params.id;
-	games.getGamesByWeek( req.session.user, week, res );
+var getGames = function( req, res ) {
+	games.getGamesByWeek(req, res);
 };
 
-var getGameById = function( req, res ) {
-	var gameId = req.params.id;
-	games.getGameById( req.session.user, gameId, res );
+var getGame = function( req, res ) {
+	games.getGame( req, res );
 };
 
-var getPicksByWeek = function( req, res ) {
-	var week = req.params.id;
-	games.getPicksByWeek( req.session.user, week, res );
+var getPicks = function( req, res ) {
+	games.getPicksByLeague( req, res );
 };
 
 var updatePick = function( req, res ) {
-	var pick = req.body.pick;
-	var gameid = req.body.gameid;
-	var weekid = req.body.week;
-	games.updatePickByGameId( req.session.user, gameid, weekid, pick, res );
+	games.updatePickByGameId(req, res);
 };
 
 var updateSpreads = function( req, res ) {
-	var spreads = req.body.spreads;
-	games.updateSpreads(spreads,res);
+	games.updateSpreads(req,res);
 };
 
-var updateScores = function( req, res ) {
-	var scores = req.body.scores;
-	games.updateScores(scores,res);
-};
-
-var getCommentsByGameId = function( req, res ) {
-	var gameid = req.params.id;
-	var user = req.session.user;
-	games.getCommentsByGameId(user, gameid, res);
-};
-
-var addCommentsByGameId = function( req, res ) {
-	var gameid = req.body.gameid;
-	var user = req.session.user;
-	var comment = req.body.comment;
-	games.addCommentByGameId(user, gameid, comment, res);
-};
-
-var addUser = function( req, res ) {
-	var user = {
-		email: req.body.email,
-		name: req.body.name,
-		role: 'user',
-		league: 'statscan'
-	};
-
-	res.json(404, {error:'nothing here.'});
-};
-
-var editUser = function( req, res ) {
-	// This needs to be pretty sophisticated.
-	// I need to delete the old user and update all places where that user could have done stuff
-	// this is because i made the _id of a user the email, which is immutable. So if i want to 
-	// support editing email address, i'll have to do the above
-	// maybe i want to be able to edit a user's pick as well.. res.json(404, {error:'nothing here.'});
-
-	// var userid = email: req.body.email;
-	// var user = {
-	// 	name: req.body.name,
-	// 	role: 'user',
-	// 	league: 'statscan'
-	// };
-
-	// games.addUser(user,res);
-	res.json(404, {error:'nothing here.'});
-};
-
-var getUsers = function( req, res ) {
-	// var league = 'statscan';
-	res.json(404, {error:'nothing here.'});
+function getDb( req, res, next ) {
+	connection.getInstance(function(db) {
+		req.db = db;
+		res.on('finish', function() {
+			req.db.close();
+		});
+		next();
+	});
 };
 
 exports.install = function( app ) {
-	app.get( '/api/weeks/:id', login.authenticate, getGamesByWeek );
-	app.get( '/api/games/:id', login.authenticate, getGameById );
-	app.get( '/api/picks/:id', login.authenticate, getPicksByWeek );
-	app.post( '/api/picks', login.authenticate, updatePick );
-	app.get( '/api/comments/:id', login.authenticate, getCommentsByGameId );
-	app.post( '/api/comments', login.authenticate, addCommentsByGameId );
-
-	app.get( '/api/admin/weeks/:id', login.authenticate, checkAdmin, getGamesByWeek );
-	app.post( '/api/admin/scores', login.authenticate, checkAdmin, updateScores );
-	app.post( '/api/admin/spreads', login.authenticate, checkAdmin, updateSpreads );
-
-	app.get( '/api/admin/users', login.authenticate, checkAdmin, getUsers );
-	app.post( '/api/admin/adduser', login.authenticate, checkAdmin, addUser );
-	app.post( '/api/admin/edituser', login.authenticate, checkAdmin, editUser );
+	app.get('/api/games/:year/:week', getDb, login.authenticate, impl.fetchGames, getGames);
+	app.get('/api/games/:year/:week/:gameid', getDb, login.authenticate, impl.fetchGames, getGame);
+	app.get('/api/picks/:year/:week', getDb, login.authenticate, impl.fetchGames, getPicks);
+	app.post('/api/picks/:year/:week/:gameid', getDb, login.authenticate, impl.fetchGames, updatePick);
+	app.post('/api/admin/spreads/:year/:week', getDb, login.authenticate, checkAdmin, impl.fetchGames, updateSpreads);
 };

@@ -10,8 +10,6 @@ define([
 			'click button.submit-score': 'handleSubmitScore'
 		},
 		handleSubmitScore: function(e) {
-			// [0]).find('.score-input')
-			// $(
 			var games = $(e.target).closest('div.score-form').find('.input-scores');
 			var scores = [];
 			_.each(games, function(game) {
@@ -139,11 +137,14 @@ define([
 		},
 		render: function() {
 			var week = this.options.week;
+			var year = this.options.year;
+
 			var pagerel = $('<div>',{'class': 'col-md-4 col-md-offset-3'})
 				.append(this.pager({
 						url: 'admin',
-						previousweek: Utils.prevWeek(week),
 						week: week,
+						year: year,
+						previousweek: Utils.prevWeek(week),
 						nextweek: Utils.nextWeek(week),
 						label: 'Week ' + week
 					}));
@@ -165,11 +166,11 @@ define([
 			});
 			this.$el.append($('<div>', {'class': 'row game-row white-bg'}).append(spreadView.render().el));
 			
-			var scoreView = new ScoreView({ collection: this.collection });
-			scoreView.on('save-score', function(data) {
-				me.trigger('save-score', {scores: data});
-			});
-			this.$el.append($('<div>', {'class': 'row game-row white-bg'}).append(scoreView.render().el));
+			// var scoreView = new ScoreView({ collection: this.collection });
+			// scoreView.on('save-score', function(data) {
+			// 	me.trigger('save-score', {scores: data});
+			// });
+			// this.$el.append($('<div>', {'class': 'row game-row white-bg'}).append(scoreView.render().el));
 
 			return this;
 		}

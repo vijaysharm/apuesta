@@ -13,7 +13,7 @@ define(['underscore','backbone'], function(_,Backbone) {
 		login: function( event ) {
 			event.preventDefault();
 			var data = {
-				username: $('#username').val()
+				email: $('#username').val()
 			};
 
 			this.trigger('login', data);

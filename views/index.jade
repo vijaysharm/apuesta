@@ -1,10 +1,26 @@
 html(lang="en")
  head
-  title NFL Picks 2013
+  title NFL Picks #{year}
   meta(name="viewport", content="width=device-width, initial-scale=1")
   link(href="/stylesheets/bootstrap.css", rel="stylesheet")
   link(href="/stylesheets/flat-ui.css", rel="stylesheet")
   link(href="/stylesheets/style.css", rel="stylesheet")
+  script(type='text/javascript')
+    | window.nflyear = !{locals.year}
+    | var require = {
+    |   config: {
+    |     'router': {
+    |       year: !{locals.year},
+    |       apiKey: '!{locals.apikey}',
+    |       type: '!{locals.type}'
+    |     },
+    |     'utils': {
+    |       max: !{locals.max},
+    |       min: !{locals.min},
+    |       current: !{locals.current},
+    |     }
+    |   }
+    |};
  body
 
   script(type="text/template", id="login-block")
@@ -44,9 +60,9 @@ html(lang="en")
   script(type="text/template", id="pager")
     ul(class="pagination pull-right")
       li
-        <a href="/#<%= url %>/<%= previousweek %>">&laquo;</a></li>
+        <a href="/#<%= url %>/<%= year %>/<%= previousweek %>">&laquo;</a></li>
       li
-        <a href="/#<%= url %>/<%= nextweek %>"><span class="pager-label"><%= label %></span>&raquo;</a></li>
+        <a href="/#<%= url %>/<%= year %>/<%= nextweek %>"><span class="pager-label"><%= label %></span>&raquo;</a></li>
 
   //- home page
   script(type="text/template", id="span-template")
@@ -80,7 +96,7 @@ html(lang="en")
       div(class="container")
         div(class="row")
           div(class="col-md-12")
-            h1 NFL Picks 2013
+            h1 NFL Picks #{year}
 
   div(class="row")
     div(id="loading")

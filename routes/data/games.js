@@ -1,10 +1,11 @@
 var _ = require('underscore');
 var connection = require('../database');
+var extract = require('../util').extract;
 
-var computeOutcome = function( metadata,game ) {
+var computeOutcome = function(metadata, game) {
 	var outcomeagainstspread;
-	if ( metadata && metadata.score && metadata.spread ) {
-		var score = metadata.score;
+	if ( metadata && metadata.spread && game.score ) {
+		var score = game.score;
 		var spread = metadata.spread;
 
 		var scorediff = score.home - score.away;
@@ -29,11 +30,10 @@ var computeOutcome = function( metadata,game ) {
 	return outcomeagainstspread;
 };
 
-var formatGamesByWeekResponse = function( teams, schedule, userpicks, gamedata, res ) {
+var formatGamesByWeekResponse = function( teams, schedule, userpicks, spreads, res ) {
 	var result = [];
 	for ( var g in schedule ) {
 		var game = schedule[g];
-
 		var data = {
 			id: game.id,
 			home: { 
@@ -43,20 +43,16 @@ var formatGamesByWeekResponse = function( teams, schedule, userpicks, gamedata, 
 			away: {
 				team: game.away,
 				data: teams[game.away]
-			}
+			},
+			score: game.score,
+			date: game.date
 		};
-
-		var metadata = _.find(gamedata,function(data) {
-			return data.gameid === game.id;
+		
+		var spread = _.find(spreads, function(spread) {
+			return spread.gameid === game.id;
 		});
 
-		var outcomeagainstspread;
-		if ( metadata ) {
-			data.score = metadata.score;
-			data.spread = metadata.spread;
-			data.date = metadata.date;
-			outcomeagainstspread = computeOutcome(metadata,game);
-		}
+		var outcomeagainstspread = computeOutcome(spread, game);
 
 		var userpick = _.find(userpicks, function(pick) {
 			return pick.gameid === game.id;
@@ -76,32 +72,47 @@ var formatGamesByWeekResponse = function( teams, schedule, userpicks, gamedata, 
 	res.json( result );
 };
 
-exports.getGamesByWeek = function( user, weekid, res ) {
-	weekid = parseInt(weekid);
-	connection.getInstance(function( db ) {
-		var picksdb = db.collection('picks');
-		var metadatadb = db.collection('metadata');
-	
-		picksdb.find({ userid:user._id, week:weekid }).toArray(function( err, userpicks ) {
-			if ( err ) throw err;
+exports.getGamesByWeek = function( req, res ) {
+	var picksdb = req.db.picks();
+	var spreadsdb = req.db.spreads();
+	var user = req.user;
+	var year = req.schedule.getYear();
+	var week = req.schedule.getWeek();
 
-			metadatadb.find({ week: weekid }).toArray(function( err, gamedata ) {
-				if ( err ) throw err;
+	var query = {
+		userid:user._id,
+		week: week,
+		year: year		
+	};
 
-				var schedule = require('./schedule').getGamesByWeek(weekid);
-				var teams = require('./teams').team;
-				formatGamesByWeekResponse( teams, schedule, userpicks, gamedata, res );
+	picksdb.find(query).toArray(function( err, userpicks ) {
+		if ( err ) {
+			res.json(500, {message: 'Failed to get picks'});
+		} else {
+			var query = {
+				week: week,
+				year: year		
+			};
+			spreadsdb.find(query).toArray(function(err, spreads) {
+				if ( err ) {
+					res.json(500, {message: 'Failed to get spreads'});
+				} else {
+					var teams = require('./teams').team;
+					var schedule = req.schedule.getThisWeeksGames();
+					formatGamesByWeekResponse( teams, schedule, userpicks, spreads, res );					
+				}
 			});
-		});
+		}
 	});
 };
 
-var formatGameByIdResponse = function( user, teams, game, picks, metadata, users, res ) {
+var formatGameByIdResponse = function( user, teams, game, picks, spreads, users, res ) {
 	var data = {};
 	if ( game ) {
 		data = {
 			id: game.id,
 			week: game.week,
+			year: game.year,
 			home: {
 				team: game.home,
 				data: teams[game.home]
@@ -115,16 +126,16 @@ var formatGameByIdResponse = function( user, teams, game, picks, metadata, users
 			user: {
 				id: user._id,
 				name: user.name
-			}
+			},
+			score: game.score,
+			date: game.date
 		};
 
-		var outcomeagainstspread;
-		if ( metadata ) {
-			data.score = metadata.score;
-			data.spread = metadata.spread;
-			data.date = metadata.date;
-			data.winneragainstspread = computeOutcome(metadata,game);
-		}
+		var spread = _.find(spreads, function(spread) {
+			return spread.gameid === game.id;
+		});
+
+		var outcomeagainstspread = computeOutcome(spread, game);
 
 		data.picks = [];
 		_.each(users, function(user) {
@@ -142,33 +153,49 @@ var formatGameByIdResponse = function( user, teams, game, picks, metadata, users
 
 			data.picks.push(p);
 		});
-	}
 
-	res.json(data);
+		res.json(data);
+	} else {
+		res.json(404, {message: 'Game Not Found'});
+	}
 };
 
-exports.getGameById = function( user, game, res ) {
-	var gameid = parseInt(game);
+exports.getGame = function( req, res ) {
+	var user = req.user;
+	var gameid = extract(req, 'gameid');
 	var league = user.league;
-	connection.getInstance(function( db ) {
-		var picksdb = db.collection('picks');
-		var usersdb = db.collection('users');
-		var metadatadb = db.collection('metadata');
-		usersdb.find({ league: league }).toArray(function(err,users) {
-			if ( err ) throw err;
-			picksdb.find({ gameid: gameid }).toArray(function(err, picks) {
-				if ( err ) throw err;
-				metadatadb.findOne({ gameid:gameid }, function(err,data) {
-					var teams = require('./teams').team;
-					var storedgame = require('./schedule').getGameById(gameid);
-					formatGameByIdResponse( user, teams, storedgame, picks, data, users, res );
-				});
+
+	var picksdb = req.db.picks();
+	var usersdb = req.db.users();
+	var metadatadb = req.db.spreads();
+	var week = req.schedule.getWeek();
+	var year = req.schedule.getYear();
+	var query = {week: week, year: year, gameid:gameid};
+
+	usersdb.find({ league: league }).toArray(function(err,users) {
+		if ( err ) {
+			res.json(500, {message: 'Failed to get users'});
+		} else {
+			picksdb.find(query).toArray(function(err, picks) {
+				if ( err ) {
+					res.json(500, {message: 'Failed to get picks'});
+				} else {
+					metadatadb.findOne(query, function(err,data) {
+						if ( err ) {
+							res.json(500, {message: 'Failed to get spreads'});
+						} else {
+							var teams = require('./teams').team;
+							var storedgame = req.schedule.getGame(gameid);
+							formatGameByIdResponse( user, teams, storedgame, picks, data, users, res );
+						}
+					});
+				}
 			});
-		});
+		}
 	});
 }
 
-var formatPicksByWeekResponse = function( teams, schedule, users, picks, metadata, res ) {
+var formatPicksByWeekResponse = function( teams, schedule, users, picks, spreads, res ) {
 	var result = {};
 	if ( schedule ) {
 		var leagueusers = [];
@@ -191,14 +218,16 @@ var formatPicksByWeekResponse = function( teams, schedule, users, picks, metadat
 				away: {
 					team: game.away,
 					data: teams[game.away]
-				}
+				},
+				score: game.score,
+				date: game.date
 			};
 
-			var gameinfo = _.find(metadata,function(info){
-				return info.gameid === game.id;
+			var spread = _.find(spreads,function(spread){
+				return spread.gameid === game.id;
 			});
 
-			var outcomeagainstspread = computeOutcome(gameinfo,game);
+			var outcomeagainstspread = computeOutcome(spread,game);
 
 			data.picks = [];
 			_.each(users, function(user) {
@@ -224,153 +253,80 @@ var formatPicksByWeekResponse = function( teams, schedule, users, picks, metadat
 	res.json(result);
 };
 
-exports.getPicksByWeek = function( user, weekid, res ) {
-	weekid = parseInt(weekid);
+exports.getPicksByLeague = function( req, res ) {
+	var user = req.user;
 	var league = user.league;
-	connection.getInstance(function( db ) {
-		var picksdb = db.collection('picks');
-		var usersdb = db.collection('users');
-		var metadatadb = db.collection('metadata');
-		usersdb.find({ league: league }).toArray(function(err,users) {
+	var picksdb = req.db.picks();
+	var usersdb = req.db.users();
+	var spreadsdb = req.db.spreads();
+	var week = req.schedule.getWeek();
+	var year = req.schedule.getYear();
+
+	usersdb.find({ league: league }).toArray(function(err,users) {
+		if ( err ) throw err;
+		picksdb.find({ week: week, year: year }).toArray(function(err, picks) {
 			if ( err ) throw err;
-			picksdb.find({ week: weekid }).toArray(function(err, picks) {
+			spreadsdb.find({ week: week, year: year }).toArray(function(err, spreads) {				
 				if ( err ) throw err;
-				metadatadb.find({ week: weekid }).toArray(function(err, metadata) {				
-					if ( err ) throw err;
-					var teams = require('./teams').team;
-					var schedule = require('./schedule').getGamesByWeek(weekid);
-					formatPicksByWeekResponse( teams, schedule, users, picks, metadata, res );
-				});
+				var teams = require('./teams').team;
+				var schedule = req.schedule.getThisWeeksGames();
+				formatPicksByWeekResponse( teams, schedule, users, picks, spreads, res );
 			});
 		});
 	});
 };
 
-exports.updatePickByGameId = function( user, gameid, weekid, pick, res ) {
-	var gameid = parseInt(gameid);
-	var weekid = parseInt(weekid);
-
-	connection.getInstance(function( db ) {
-		var picksdb = db.collection('picks');
+exports.updatePickByGameId = function( req, res ) {
+	var pick = extract(req, 'pick');
+	var gameid = extract(req, 'gameid');
+	var user = req.user;
+	var game = req.schedule.getGame(gameid);
+	if ( game ) {
+		var picksdb = req.db.picks();
+		var week = game.week;
+		var year = game.year;
 		var update = pick ? {$set:{ pick:pick }} : {$unset:{ pick:'' }};
-		var query = { gameid:gameid, week:weekid, userid:user._id };
+		var query = { gameid:gameid, week: week, year: year, userid:user._id };
 		var sort = [['gameid','1']];
 		var options = {upsert:true, 'new':true};
-		picksdb.findAndModify(query, sort, update, options, function(err,userpick) {
-			if (err) throw err;
+		picksdb.findAndModify(query, sort, update, options, function(err, userpick) {
+			if (err) {
+				res.json(500, {message: 'Failed to save pick'});
+			} else {
+				// var eventsdb = db.collection('events');
+				// query = pickevent = { gameid:[gameid], userid:user._id, type:'pick' };
+				// update = pick ? {$set:{ pick:pick }} : {$unset:{ pick:'' }};
+				// sort = [['gameid','1']];
+				// options = {upsert:true, 'new':true};
+				// eventsdb.findAndModify(query, sort, update, options,function(err,e) {});
 
-			// var eventsdb = db.collection('events');
-			// query = pickevent = { gameid:[gameid], userid:user._id, type:'pick' };
-			// update = pick ? {$set:{ pick:pick }} : {$unset:{ pick:'' }};
-			// sort = [['gameid','1']];
-			// options = {upsert:true, 'new':true};
-			// eventsdb.findAndModify(query, sort, update, options,function(err,e) {});
-
-			// TODO: Should return the updated object
-			res.send(200);
+				// TODO: Should return the updated object
+				res.json(200, userpick);
+			}
 		});
-	});
+	} else {
+		res.json(400, {message: 'Game ID not part of given week'});
+	}
 };
 
-var formatCommentsByGameIdResponse = function(users, comments, res) {
-	var result = [];
-
-	_.each(comments,function(comment){
-		var user = _.find(users,function(user) {
-			return user._id === comment.userid;
-		});
-		
-		result.push({
-			comment: comment.comment,
-			gameid: comment.gameid,
-			user: user.name ? user.name : 'some guy',
-			date: comment._id.getTimestamp()
-		});
-	});
-
-	res.json(result);
-};
-
-exports.getCommentsByGameId = function(user, gameid, res) {
-	var gameid = parseInt(gameid);
-	var league = user.league;
-
-	connection.getInstance(function( db ) {
-		var commentsdb = db.collection('comments');
-		var usersdb = db.collection('users');
-		usersdb.find({ league: league }).toArray(function(err,users) {
-			if ( err ) throw err;
-			commentsdb.find({gameid:gameid}).toArray(function(err,comments) {
-				if ( err ) throw err;
-				formatCommentsByGameIdResponse(users,comments,res);
-			});
-		});
-	});
-};
-
-var formatAddCommentsByGameIdResponse = function( comment, res ) {
-	res.json(comment);
-};
-
-exports.addCommentByGameId = function( user, gameid, comment, res ) {
-	gameid = parseInt(gameid);
-	var weekid = require('./schedule').getweekByGameId(gameid);
-
-	var commentObject = {
-		comment: comment,
-		userid: user._id,
-		gameid: gameid
-	};
-
-	connection.getInstance(function( db ) {
-		var commentsdb = db.collection('comments');
-		commentsdb.insert(commentObject,function(err,result) {
-			if (err) throw err;
-			var c = result[0];
-			delete c.userid;
-			c.user = user.name;
-			formatAddCommentsByGameIdResponse(c,res);
-
-			// var eventsdb = db.collection('events');
-			// var query = pickevent = { gameid:[gameid], userid:user._id, type:'comment' };
-			// var update = pick ? {$set:{ pick:pick }} : {$unset:{ pick:'' }};
-			// var sort = [['gameid','1']];
-			// var options = {upsert:true, 'new':true};
-			// eventsdb.findAndModify(query, sort, update, options,function(err,e) {});
-		});
-	});
-};
-
-exports.updateScores = function( scores, res ) {
-	connection.getInstance(function( db ) {
-		_.each(scores,function(score) {
-			var metadatadb = db.collection('metadata');
-			var gameid = parseInt(score.gameid);
-			var update = score.score ? {$set:{ score: score.score }} : {$unset:{ score:'' }};
-			var query = { gameid:gameid };
-			var sort = [['gameid','1']];
-			var options = { upsert:true, 'new':true };
-			metadatadb.findAndModify(query, sort, update, options, function(err, storedspread) {
-				if (err) throw err;
-			});
-		}, this);
-
-	});
-	res.send(200);
-};
-
-exports.updateSpreads = function( spreads, res ) {
-	connection.getInstance(function( db ) {
+exports.updateSpreads = function( req, res ) {
+	var spreads = extract(req, 'spreads');
+	if ( spreads ) {
+		var result = [];
 		_.each(spreads, function(spread) {
-			var metadatadb = db.collection('metadata');
-			var gameid = parseInt(spread.gameid);
-			var update = spread.spread ? {$set:{ spread: spread.spread }} : {$unset:{ spread:'' }};
-			var query = { gameid:gameid };
-			var sort = [['gameid','1']];
-			var options = { upsert:true, 'new':true };
-			metadatadb.findAndModify(query, sort, update, options, function(err, storedspread) {
-				if (err) throw err;
-			});
+			var metadatadb = req.db.spreads();
+			var gameid = spread.gameid;
+			var game = req.schedule.getGame(gameid);
+			if ( game ) {
+				var query = { gameid:gameid, week: game.week, year: game.year };
+				var update = spread.spread ? {$set:{ spread: spread.spread }} : {$unset:{ spread:'' }};
+				var sort = [['gameid','1']];
+				var options = {upsert: true, 'new': true};
+				metadatadb.findAndModify(query, sort, update, options, function(err, storedspread) {
+					if ( err ) {}
+					else {result.push(storedspread);}
+				});
+			}
 		}, this);
 
 		// var games = _.pluck(spreads,'gameid');
@@ -380,8 +336,10 @@ exports.updateSpreads = function( spreads, res ) {
 		// var sort = [['gameid','1']];
 		// var options = {upsert:true, 'new':true};
 		// eventsdb.findAndModify(query, sort, update, options,function(err,e) {});		
-	});
 
-	// TODO: Should return the updated object
-	res.send(200);
+		// TODO: Should return the updated object
+		res.send(200, result);
+	} else {
+		res.json(400, {message: 'Spreads not provided'});
+	}
 };

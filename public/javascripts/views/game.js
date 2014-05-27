@@ -148,7 +148,7 @@ define([
 		render: function() {
 			var data = this.model.get('game');
 			var back = $('<a>',{
-				href:'/#week/' + data.week,
+				href:'/#week/' + data.year + '/' + data.week,
 				'id': 'back'
 			}).html('&laquo; Back to Week ' + data.week + ' Games');
 
@@ -159,6 +159,7 @@ define([
 			var pagerel = $('<div>',{'class': 'col-md-5 col-md-offset-2'})
 				.append(this.pager({
 						url: 'game',
+						year: data.year + '/' + data.week,
 						previousweek: data.previousgame.id,
 						nextweek: data.nextgame.id,
 						label: 'Next: ' + data.nextgame.away + '@' + data.nextgame.home
@@ -222,7 +223,7 @@ define([
 			var comments = $('<div>', {'id':'comments','class':'row'})
 				.html($('<h4>').text('Loading comments...'));
 
-			container.append(comments);
+			// container.append(comments);
 
 			this.$el.append(container);
 			return this;

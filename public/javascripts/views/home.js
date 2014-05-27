@@ -28,7 +28,7 @@ define([
 			input.closest('label').addClass(team.toLowerCase());
 
 			team = team === 'PASS' ? undefined : team;
-			this.trigger('save',{
+			this.trigger('save', {
 				pick: team,
 				gameid: gameid
 			});
@@ -46,7 +46,11 @@ define([
 				return;
 
 			var gameid = this.model.get('id');
-			Backbone.history.navigate('/#game/' + gameid);
+			this.trigger('select', {
+				gameid: gameid,
+				year: this.options.year,
+				week: this.options.week
+			})
 		},
 		addTeamPick: function() {
 			var pick = this.model.get('pick');
@@ -192,16 +196,18 @@ define([
 		pager: _.template($('#pager').html()),
 		render: function() {
 			var week = this.options.week;
+			var year = this.options.year;
 			var navel = $('<div>',{'class':'col-md-5'})
 				.append($('<ul>',{'class':'pagination'})
 					.append($('<li>',{'class':'active'})
-						.append($('<a>',{href:'/#week/' + week}).text('Week ' + week + ' Games')))
+						.append($('<a>',{href:'/#week/' + year + '/' + week}).text('Week ' + week + ' Games')))
 					.append($('<li>')
-						.append($('<a>',{href:'/#picks/' + week}).text("League Picks"))));
+						.append($('<a>',{href:'/#picks/' + year + '/' + week}).text("League Picks"))));
 
 			var pagerel = $('<div>',{'class': 'col-md-5 col-md-offset-2'})
 				.append(this.pager({
 						url: 'week',
+						year: year,
 						previousweek: Utils.prevWeek(week),
 						nextweek: Utils.nextWeek(week),
 						label: 'Next: Week ' + Utils.nextWeek(week)
@@ -213,10 +219,18 @@ define([
 			this.$el.append(controlel);
 
 			this.collection.each( function( game ) {
-				var gameView = new GameView({ model: game });
+				var gameView = new GameView({ 
+					model: game,
+					week : week,
+					year : year
+				});
+
 				gameView.on('save',function(data) {
 					data.week = week;
 					this.trigger('save', data);
+				}, this);
+				gameView.on('select', function(data) {
+					this.trigger('select', data);
 				}, this);
 				this.$el.append(gameView.render().el);
 			}, this);
