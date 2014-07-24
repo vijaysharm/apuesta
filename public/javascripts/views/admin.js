@@ -162,7 +162,11 @@ define([
 			var me = this;
 			var spreadView = new SpreadView({ collection: this.collection });
 			spreadView.on('save-spread', function(data) {
-				me.trigger('save-spread', {spreads:data});
+				me.trigger('save-spread', {
+					year: me.options.year,
+					week: me.options.week,
+					spreads:data
+				});
 			});
 			this.$el.append($('<div>', {'class': 'row game-row white-bg'}).append(spreadView.render().el));
 			

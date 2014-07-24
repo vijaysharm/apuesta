@@ -124,7 +124,6 @@ function checkApiKey( req, res, next ) {
 
 function checkKey( req, res, next, prop ) {
 	var key = extract(req, prop);
-	console.log(req.headers);
 	if ( key ) {
 		var version = req.db.version();
 		version.findOne(function(err, properties) {

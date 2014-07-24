@@ -28,7 +28,7 @@ function checkResult(result) {
 		return {message: 'FAIL No result segment found: '};
 }
 
-function update(req, res, next, result) {
+function update(req, res, result) {
 	var check = checkResult(result);
 
 	if ( check ) {
@@ -47,6 +47,7 @@ function update(req, res, next, result) {
 			var minutes = time.substr(time.indexOf(":")+1, 2);
 			var date = new Date(year, month - 1, day, hours, minutes, 0, 0);
 			var state = g.$.q === 'F' ? 'final' : 'pending';
+			var type = g.$.gt;
 
 			var hasScore = g.$.vs && g.$.hs;
 			var score = {
@@ -60,16 +61,24 @@ function update(req, res, next, result) {
 				away: g.$.v,
 				year: year,
 				week: week,
-				type: g.$.gt,
+				type: type,
 				date: date,
 				state: state,
 				score: hasScore ? score : undefined
 			};
 			games.push(game);
+
+			var query = {_id: game._id};
+			var update = game;
+			var sort = [['gameid','1']];
+			var options = {upsert:true, 'new':true};
+
+			req.db.schedule().findAndModify(query, sort, update, options, function(err) {
+				// do nothing.
+			});
 		});
 
-		req.schedule = new Schedule(year, week, games);
-		next();
+		return games;
 	}
 }
 
@@ -91,10 +100,27 @@ exports.fetchGames = function(req, res, next) {
 		});
 		resp.on('end', function() {
 			parseString(xml, function (err, result) {
-				update(req, res, next, result);
+				var games = update(req, res, result);
+				req.schedule = new Schedule(year, week, type, games);
+				next();
     		});
 		});
 	}).on('error', function(e) {
-  		res.json(500, {message: e});
+		var query = {
+			year: year,
+			week: week,
+			type: type
+		};
+
+		req.db.schedule().find(query).toArray(function(err, games) {
+			if ( err ) {
+				res.json(500, {message: e});
+			} else if ( games.length === 0 ) {
+				res.json(500, {message: 'No games found'});
+			} else {
+				req.schedule = new Schedule(year, week, type, games);
+				next();
+			}
+		});
 	});
 };

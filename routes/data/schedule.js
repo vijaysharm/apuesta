@@ -1,6 +1,6 @@
 var _ = require('underscore');
 
-exports.Schedule = function(year, week, games) {
+exports.Schedule = function(year, week, type, games) {
 	this.year = year;
 	this.week = week;
 	this.games = games;
@@ -38,9 +38,6 @@ exports.Schedule = function(year, week, games) {
 				if ( game._id === eid ) {
 					var prev = i === 0 ? (me.games.length - 1) : (i - 1);
 					var next = i === (me.games.length - 1) ? 0 : (i + 1);
-
-					console.log('prev ' + prev);
-					console.log('next ' + next);
 
 					prev = me.games[prev];
 					next = me.games[next];

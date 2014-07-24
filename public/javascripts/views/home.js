@@ -30,7 +30,9 @@ define([
 			team = team === 'PASS' ? undefined : team;
 			this.trigger('save', {
 				pick: team,
-				gameid: gameid
+				gameid: gameid,
+				year: this.options.year,
+				week: this.options.week
 			});
 		},
 		handleGameSelection: function(e) {
@@ -227,6 +229,7 @@ define([
 
 				gameView.on('save',function(data) {
 					data.week = week;
+					data.year = year;
 					this.trigger('save', data);
 				}, this);
 				gameView.on('select', function(data) {

@@ -47,12 +47,6 @@ var formatGamesByWeekResponse = function( teams, schedule, userpicks, spreads, r
 			score: game.score,
 			date: game.date
 		};
-		
-		var spread = _.find(spreads, function(spread) {
-			return spread.gameid === game.id;
-		});
-
-		var outcomeagainstspread = computeOutcome(spread, game);
 
 		var userpick = _.find(userpicks, function(pick) {
 			return pick.gameid === game.id;
@@ -62,6 +56,15 @@ var formatGamesByWeekResponse = function( teams, schedule, userpicks, spreads, r
 			data.pick = userpick.pick;
 		}
 
+		var spread = _.find(spreads, function(spread) {
+			return spread.gameid === game.id;
+		});
+		
+		if ( spread ) {
+			data.spread = spread.spread;
+		}
+
+		var outcomeagainstspread = computeOutcome(spread, game);
 		if ( outcomeagainstspread ) {
 			data.winneragainstspread = outcomeagainstspread;
 		}
@@ -314,6 +317,7 @@ exports.updateSpreads = function( req, res ) {
 	if ( spreads ) {
 		var result = [];
 		_.each(spreads, function(spread) {
+			console.log('game: ' + spread.gameid);
 			var metadatadb = req.db.spreads();
 			var gameid = spread.gameid;
 			var game = req.schedule.getGame(gameid);
@@ -323,9 +327,13 @@ exports.updateSpreads = function( req, res ) {
 				var sort = [['gameid','1']];
 				var options = {upsert: true, 'new': true};
 				metadatadb.findAndModify(query, sort, update, options, function(err, storedspread) {
-					if ( err ) {}
+					if ( err ) {
+						console.log('Failed ' + err);
+					}
 					else {result.push(storedspread);}
 				});
+			} else {
+				console.log('no game found ' + gameid);
 			}
 		}, this);
 

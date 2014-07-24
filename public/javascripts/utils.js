@@ -3,6 +3,9 @@ define(['module'], function(module){
 		computeWeek: function() {
 			return module.config().current;
 		},
+		getYear: function() {
+			return module.config().year;
+		},
 		nextWeek: function(week) {
 			week = parseInt(week);
 			var next = week + 1;

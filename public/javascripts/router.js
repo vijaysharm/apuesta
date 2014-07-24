@@ -49,7 +49,7 @@ function( _,
 			var headerCallback = this.headerCallback();
 			loginView.on('login', function(data) {
 				me.doPost('/login', data, headerCallback, function(result) {
-					me.config.sessionId = result.sessionid;
+					localStorage.sessionid = result.sessionid;
 					me.config.email = result.email;
 					Backbone.history.navigate('/#');
 				});
@@ -137,6 +137,8 @@ function( _,
 			$('#logout').html(this.logoutbar({}));
 			
 			week = week || Utils.computeWeek();
+			year = year || this.config.year;
+
 			var me = this;
 			this.fetchWeek( year, week, function( data ) {
 				var adminView = new AdminListView({ 
@@ -146,12 +148,12 @@ function( _,
 				});
 				adminView.on('save-spread', function(data) { 
 					this.updateSpreads(data,function(result){
-						Backbone.history.navigate('/#');
+						// Backbone.history.navigate('/#');
 					});
 				}, me);
 				adminView.on('save-score', function(data) { 
 					this.updateScores(data,function(result){
-						Backbone.history.navigate('/#');
+						// Backbone.history.navigate('/#');
 					});
 				}, me);
 
@@ -182,15 +184,15 @@ function( _,
 		},
 		updateSelectedTeam: function( data, callback ) {
 			var headerCallback = this.headerCallback();
-			this.doPost( '/api/picks/', data, headerCallback, callback );
+			this.doPost( '/api/picks/' + data.year + '/' + data.week + '/' + data.gameid, data, headerCallback, callback );
 		},
 		updateScores: function( data, callback ) {
 			var headerCallback = this.headerCallback();
-			this.doPost( '/api/admin/scores/', headerCallback, data, callback );
+			this.doPost( '/api/admin/scores/', headerCallback, data, headerCallback, callback );
 		},
 		updateSpreads: function( data, callback ) {
 			var headerCallback = this.headerCallback();
-			this.doPost( '/api/admin/spreads/', headerCallback, data, callback );
+			this.doPost( '/api/admin/spreads/' + data.year + '/' + data.week, data, headerCallback, callback );
 		},
 		addComment: function( data, callback ) {
 			var headerCallback = this.headerCallback();
@@ -236,8 +238,8 @@ function( _,
 			$.ajax(options);
 		},
 		headerCallback: function() {
+			var sessionId = localStorage.sessionid;
 			var apiKey = this.config.apiKey;
-			var sessionId = this.config.sessionId;
 			var email = this.config.email;
 			var type = this.config.type;
 

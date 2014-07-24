@@ -33,7 +33,7 @@ define([
 				userpick.pick = team ? team : '';
 				$('#pickstable').html(this.renderPicks());
 			}
-			this.trigger('save',{
+			this.trigger('save', {
 				pick: team,
 				gameid: gameid,
 				week: data.week
