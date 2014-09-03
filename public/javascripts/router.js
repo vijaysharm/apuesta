@@ -50,7 +50,7 @@ function( _,
 			loginView.on('login', function(data) {
 				me.doPost('/login', data, headerCallback, function(result) {
 					localStorage.sessionid = result.sessionid;
-					me.config.email = result.email;
+					localStorage.email = result.email;
 					Backbone.history.navigate('/#');
 				});
 			});
@@ -62,7 +62,9 @@ function( _,
 		showWeek: function( year, week ) {
 			$('#content').hide();
 			$('#loading').show();
-			$('#logout').html(this.logoutbar({}));
+			$('#logout').html(this.logoutbar({
+				sessionId: localStorage.sessionid
+			}));
 
 			var me = this;
 			this.fetchWeek( year, week, function( data ) {
@@ -87,7 +89,9 @@ function( _,
 		showGame: function( year, week, gameid ) {
 			$('#content').hide();
 			$('#loading').show();
-			$('#logout').html(this.logoutbar({}));
+			$('#logout').html(this.logoutbar({
+				sessionId: localStorage.sessionid
+			}));
 
 			var me = this;
 			this.fetchGame( year, week, gameid, function( data ) {
@@ -119,7 +123,9 @@ function( _,
 		showPicks: function( year, week ) {
 			$('#content').hide();
 			$('#loading').show();
-			$('#logout').html(this.logoutbar({}));
+			$('#logout').html(this.logoutbar({
+				sessionId: localStorage.sessionid
+			}));
 
 			this.fetchPicks( year, week, function( data ) {
 				var picksView = new PicksView({ week: week, model: new PicksModel({ picks:data }) });
@@ -134,7 +140,9 @@ function( _,
 		showAdmin: function( year, week ) {
 			$('#content').hide();
 			$('#loading').show();
-			$('#logout').html(this.logoutbar({}));
+			$('#logout').html(this.logoutbar({
+				sessionId: localStorage.sessionid
+			}));
 			
 			week = week || Utils.computeWeek();
 			year = year || this.config.year;
@@ -239,8 +247,8 @@ function( _,
 		},
 		headerCallback: function() {
 			var sessionId = localStorage.sessionid;
+			var email = localStorage.email;
 			var apiKey = this.config.apiKey;
-			var email = this.config.email;
 			var type = this.config.type;
 
 			return function(xhr) {

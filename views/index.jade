@@ -56,6 +56,15 @@ html(lang="en")
     </label>    
     </div>
 
+  script(type="text/template", id="logoutbar")
+    <div class="row">
+    <div class="col-md-12">
+    <div class="pull-right">
+    <a href="/help.html", target="_blank", class='help'>Need Help?</a>
+    <a href="/logout?sessionid=<%= sessionId %>", class='help'>Logout</a>
+    </div>
+    </div>      
+    </div>
 
   //- weekly pager
   script(type="text/template", id="pager")
@@ -82,13 +91,6 @@ html(lang="en")
         <%= score.away %>
       span(class="score")
         <%= score.home %>
-
-  script(type="text/template", id="logoutbar")
-    div(class="row")
-      div(class="col-md-12")
-        div(class="pull-right")
-          a(href="/help.html", target="_blank", class='help') Need Help?
-          a(href="/logout", class='help') Logout
 
   div(id="logout")
   
