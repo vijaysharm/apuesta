@@ -128,7 +128,11 @@ function( _,
 			}));
 
 			this.fetchPicks( year, week, function( data ) {
-				var picksView = new PicksView({ week: week, model: new PicksModel({ picks:data }) });
+				var picksView = new PicksView({ 
+					week: week, 
+					year: year,					
+					model: new PicksModel({ picks:data }) 
+				});
 
 				$('#content').html(picksView.render().el);
 				$('#content').append(data);

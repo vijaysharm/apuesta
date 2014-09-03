@@ -3,6 +3,7 @@ define(['underscore','backbone','utils'], function(_,Backbone,Utils) {
 		pager: _.template($('#pager').html()),
 		render: function() {
 			var week = this.options.week;
+			var year = this.options.year;
 			var navel = $('<div>',{'class':'col-md-5'})
 				.append($('<ul>',{'class':'pagination'})
 					.append($('<li>')
@@ -13,6 +14,7 @@ define(['underscore','backbone','utils'], function(_,Backbone,Utils) {
 			var pagerel = $('<div>',{'class': 'col-md-5 col-md-offset-2'})
 				.append(this.pager({
 						url: 'picks',
+						year: year + '/' + week,
 						previousweek: Utils.prevWeek(week),
 						nextweek: Utils.nextWeek(week),
 						label: 'Next: Week ' + Utils.nextWeek(week)
