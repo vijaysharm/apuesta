@@ -10,7 +10,8 @@
     "jade": "*",
     "mongodb" : "1.1.11",
     "underscore": "*",
-    "xml2js": "*"
+    "xml2js": "*",
+    "moment": "2.8.2"
   },
   "devDependencies": {
     "nodemon": "*"
