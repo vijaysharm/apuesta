@@ -159,7 +159,7 @@ define([
 			var pagerel = $('<div>',{'class': 'col-md-5 col-md-offset-2'})
 				.append(this.pager({
 						url: 'game',
-						year: data.year + '/' + data.week,
+						year: data.year,
 						previousweek: data.previousgame.id,
 						nextweek: data.nextgame.id,
 						label: 'Next: ' + data.nextgame.away + '@' + data.nextgame.home

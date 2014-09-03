@@ -7,14 +7,14 @@ define(['underscore','backbone','utils'], function(_,Backbone,Utils) {
 			var navel = $('<div>',{'class':'col-md-5'})
 				.append($('<ul>',{'class':'pagination'})
 					.append($('<li>')
-						.append($('<a>',{href:'/#week/' + week}).text('Week ' + week + ' Games')))
+						.append($('<a>',{href:'/#week/' + year + '/' + week}).text('Week ' + week + ' Games')))
 					.append($('<li>',{'class':'active'})
-						.append($('<a>',{href:'/#picks/' + week}).text("League Picks"))));
+						.append($('<a>',{href:'/#picks/' + year + '/' + week}).text("League Picks"))));
 
 			var pagerel = $('<div>',{'class': 'col-md-5 col-md-offset-2'})
 				.append(this.pager({
 						url: 'picks',
-						year: year + '/' + week,
+						year: year,
 						previousweek: Utils.prevWeek(week),
 						nextweek: Utils.nextWeek(week),
 						label: 'Next: Week ' + Utils.nextWeek(week)
