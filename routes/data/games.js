@@ -109,7 +109,7 @@ exports.getGamesByWeek = function( req, res ) {
 	});
 };
 
-var formatGameByIdResponse = function( user, teams, game, picks, spreads, users, res ) {
+var formatGameByIdResponse = function( user, teams, game, picks, spread, users, res ) {
 	var data = {};
 	if ( game ) {
 		data = {
@@ -134,11 +134,14 @@ var formatGameByIdResponse = function( user, teams, game, picks, spreads, users,
 			date: game.date
 		};
 
-		var spread = _.find(spreads, function(spread) {
-			return spread.gameid === game.id;
-		});
+		if ( spread ) {
+			data.spread = spread.spread;
+		}
 
 		var outcomeagainstspread = computeOutcome(spread, game);
+		if ( outcomeagainstspread ) {
+			data.winneragainstspread = outcomeagainstspread;
+		}
 
 		data.picks = [];
 		_.each(users, function(user) {

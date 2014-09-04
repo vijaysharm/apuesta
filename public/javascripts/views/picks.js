@@ -42,7 +42,7 @@ define(['underscore','backbone','utils'], function(_,Backbone,Utils) {
 
 				var divel = $('<a>',{
 					'class': 'picks-vs',
-					'href': '/#game/' + game.id
+					'href': '/#game/' + year + '/' + week + '/' + game.id
 				}).append(awayel).append(homeel);
 
 				var a = $('<td>',{'class':'highlight'}).append(divel).css({
