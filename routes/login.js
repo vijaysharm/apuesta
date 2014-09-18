@@ -90,6 +90,7 @@ exports.authenticate = function( req, res, next ) {
 	var email = extract(req, 'email');
 	if ( key ) {
 		if ( email ) {
+			email = email.toLowerCase();
 			req.db.sessions().findOne({_id: email, session: key}, function(err, session) {
 				if ( err || ! session) {
 					res.json(401, {message: 'No Session found'});

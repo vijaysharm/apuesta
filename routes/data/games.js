@@ -317,23 +317,29 @@ exports.updatePickByGameId = function( req, res ) {
 
 exports.updateSpreads = function( req, res ) {
 	var spreads = extract(req, 'spreads');
+	console.log(spreads);
 	if ( spreads ) {
 		var result = [];
 		_.each(spreads, function(spread) {
-			console.log('game: ' + spread.gameid);
 			var metadatadb = req.db.spreads();
 			var gameid = spread.gameid;
 			var game = req.schedule.getGame(gameid);
+
 			if ( game ) {
 				var query = { gameid:gameid, week: game.week, year: game.year };
 				var update = spread.spread ? {$set:{ spread: spread.spread }} : {$unset:{ spread:'' }};
 				var sort = [['gameid','1']];
 				var options = {upsert: true, 'new': true};
+				console.log(query);
+				console.log(update);
 				metadatadb.findAndModify(query, sort, update, options, function(err, storedspread) {
 					if ( err ) {
 						console.log('Failed ' + err);
 					}
-					else {result.push(storedspread);}
+					else {
+						console.log(storedspread);
+						result.push(storedspread);
+					}
 				});
 			} else {
 				console.log('no game found ' + gameid);

@@ -47,29 +47,18 @@ define([
 			var pick = userpick.pick;
 
 			// var winneragainstspread = this.model.get('winneragainstspread');
-			var date = new Date(data.date);
-			var now = new Date();
-			now.setHours(now.getHours() - 4);
+			var date = moment.utc(data.date, moment.ISO_8601)
+			var now = moment();
+
+			// var date = new Date(data.date);
+			// var now = new Date();
+			// now.setHours(now.getHours() - 4);
 
 			var away = data.away;
 			var home = data.home;
 
 			var pickline
-			if ( now > date ) {
-			// 	if ( pick ) {
-			// 		pickline = $('<h4>').append("You picked ")
-			// 			.append(this.spanTemplate({
-			// 				cls: pick.toLowerCase(),
-			// 				text: pick
-			// 		}));
-
-			// 		if ( winneragainstspread ) {
-			// 			this.$el.addClass(winneragainstspread === pick ? 'win' : 'lose');
-			// 		}						
-			// 	} else {
-			// 		pickline = $('<h4>').append("You passed on this game");
-			// 	}
-			} else {
+			if ( now.isBefore(date) ) {
 				var selectordata = {
 					pass : {
 						data:'PASS',
@@ -159,7 +148,7 @@ define([
 			var pagerel = $('<div>',{'class': 'col-md-5 col-md-offset-2'})
 				.append(this.pager({
 						url: 'game',
-						year: data.year,
+						year: data.year + '/' + data.week,
 						previousweek: data.previousgame.id,
 						nextweek: data.nextgame.id,
 						label: 'Next: ' + data.nextgame.away + '@' + data.nextgame.home

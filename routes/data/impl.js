@@ -4,6 +4,7 @@ var http = require('http');
 var parseString = require('xml2js').parseString;
 var extract = require('../util').extract;
 var Schedule = require('./schedule').Schedule;
+var moment = require('moment');
 
 function checkResult(result) {
 	if ( result )
@@ -40,12 +41,20 @@ function update(req, res, result) {
 		var week = result.ss.gms[0].$.w;
 		_.each(result.ss.gms[0].g, function(g) {
 			var eid = g.$.eid;
-			var month = eid.substr(4, 2);
-			var day = eid.substr(6, 2);
+			var month = parseInt(eid.substr(4, 2));
+			var day = parseInt(eid.substr(6, 2));
 			var time = g.$.t;
-			var hours = time.substring(0, time.indexOf(":"));
-			var minutes = time.substr(time.indexOf(":")+1, 2);
-			var date = new Date(year, month - 1, day, hours, minutes, 0, 0);
+			var hours = parseInt(time.substring(0, time.indexOf(":")));
+			var minutes = parseInt(time.substr(time.indexOf(":")+1, 2));
+
+			var momentDate = {
+				y: year,
+				M: month - 1,
+				d: day,
+				h: hours + 12,
+				m: minutes
+			};
+			var date = moment.utc(momentDate).toISOString();
 			var state = g.$.q === 'F' ? 'final' : 'pending';
 			var type = g.$.gt;
 

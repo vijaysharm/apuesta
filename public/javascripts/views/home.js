@@ -57,15 +57,14 @@ define([
 		addTeamPick: function() {
 			var pick = this.model.get('pick');
 			var winneragainstspread = this.model.get('winneragainstspread');
-			var date = new Date(this.model.get('date'));
-			var now = new Date();
-			now.setHours(now.getHours() - 4);
+			var date = moment.utc(this.model.get('date'), moment.ISO_8601)
+			var now = moment();
 
 			var away = this.model.get('away');
 			var home = this.model.get('home');
 
 			var pickline
-			if ( now > date ) {
+			if ( now.isAfter(date) ) {
 				if ( pick ) {
 					pickline = $('<h4>').append("You picked ")
 						.append(this.spanTemplate({
