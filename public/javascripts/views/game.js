@@ -1,7 +1,8 @@
 define([
 	'underscore',
 	'backbone',
-	'moment'
+	'moment',
+	'moment-timezone-with-data'
 ],function(_,Backbone,moment) {
 	var GameView = Backbone.View.extend({
 		teamTemplate: _.template($('#team').html()),
@@ -17,7 +18,7 @@ define([
 			var input = $(e.target);
 			var team = input.attr('id');
 			var gameid = data.id;
-			
+
 			var away = data.away.team.toLowerCase();
 			var home = data.home.team.toLowerCase();
 			var labels = input.closest('div.btn-group').find('label');
@@ -38,7 +39,7 @@ define([
 				gameid: gameid,
 				week: data.week
 			});
-		},		
+		},
 		addTeamPick: function() {
 			var data = this.model.get('game');
 			var userpick = _.find(data.picks,function( pick ) {
@@ -75,7 +76,7 @@ define([
 						label: away.team,
 						style: 'team-selection highlight-invert'
 					}
-				}	
+				}
 
 				var property;
 				var val;
@@ -91,14 +92,14 @@ define([
 					property = 'pass';
 					val = 'pass';
 				}
-				selectordata[property].style = 
+				selectordata[property].style =
 					selectordata[property].style + ' ' + val;
 
 				pickline = $('<span>',{'class':'pick'})
 					.append($('<h4>').text('Pick: '))
-					.append(this.selectorTemplate(selectordata));	
+					.append(this.selectorTemplate(selectordata));
 			}
-			
+
 			var col = $('<div>',{'class':'col-md-12'}).append(pickline);
 			return $('<div>',{'class':'row spread-pick-row'}).append(col);
 		},
@@ -110,7 +111,7 @@ define([
 			for ( var i in data.picks ) {
 				var userpick = data.picks[i];
 				userrow.append($('<th>').text(userpick.user.name));
-				
+
 				var p = null;
 				var pickcell = $('<td>');
 				if ( userpick.pick ) {
@@ -183,14 +184,14 @@ define([
 				var spread = data.spread;
 				if ( spread < 0 ) {
 					var away = data.away.team;
-					var span = $('<span>',{"class":away.toLowerCase()}).text(away); 
+					var span = $('<span>',{"class":away.toLowerCase()}).text(away);
 					span.addClass('teamid');
 					var h3 = $('<h3>').append(span).append(" favoured by " + Math.abs(spread));
 					var spreadline = $('<div>',{'class':'row'}).append($('<div>',{'class':'col-md-12'}).append(h3));
 					col.append(spreadline);
 				} else if ( spread > 0 ) {
 					var home = data.home.team;
-					var span = $('<span>',{"class":home.toLowerCase()}).text(home); 
+					var span = $('<span>',{"class":home.toLowerCase()}).text(home);
 					span.addClass('teamid');
 					var h3 = $('<h3>').append(span).append(" favoured by " + Math.abs(spread));
 					var spreadline = $('<div>',{'class':'row'}).append($('<div>',{'class':'col-md-12'}).append(h3));
@@ -255,7 +256,7 @@ define([
 					gameid: gameid
 				});
 				input.val('');
-				submit.hide();				
+				submit.hide();
 			});
 			var z = $('<div>',{'class':'col-md-8 col-md-offset-2'})
 				.append(input);

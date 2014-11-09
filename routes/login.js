@@ -97,7 +97,7 @@ exports.authenticate = function( req, res, next ) {
 				} else {
 					req.db.users().findOne({_id: session._id}, function(err, user) {
 						req.user = user;
-						next();	
+						next();
 					});
 				}
 			});

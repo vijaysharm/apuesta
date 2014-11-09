@@ -4,12 +4,12 @@ var http = require('http');
 var parseString = require('xml2js').parseString;
 var extract = require('../util').extract;
 var Schedule = require('./schedule').Schedule;
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 function checkResult(result) {
 	if ( result )
 		if ( result.ss )
-			if ( result.ss.gms ) 
+			if ( result.ss.gms )
 				if ( result.ss.gms[0] )
 					if ( result.ss.gms[0].g )
 						if (result.ss.gms[0].g.length !== 0) {
@@ -54,7 +54,8 @@ function update(req, res, result) {
 				h: hours + 12,
 				m: minutes
 			};
-			var date = moment.utc(momentDate).toISOString();
+
+			var date = moment.tz(momentDate, "America/New_York").toISOString();
 			var state = g.$.q === 'F' ? 'final' : 'pending';
 			var type = g.$.gt;
 
