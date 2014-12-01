@@ -186,10 +186,12 @@ exports.getGame = function( req, res ) {
 				if ( err ) {
 					res.json(500, {message: 'Failed to get picks'});
 				} else {
+					console.log(query);
 					metadatadb.findOne(query, function(err,data) {
 						if ( err ) {
 							res.json(500, {message: 'Failed to get spreads'});
 						} else {
+							console.log(data);
 							var teams = require('./teams').team;
 							var storedgame = req.schedule.getGame(gameid);
 							formatGameByIdResponse( user, teams, storedgame, picks, data, users, res );

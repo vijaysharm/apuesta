@@ -54,6 +54,11 @@ exports.team = {
 		shortname: 'Jaguars',
 		img100: '/images/JAC.png'
 	},
+	'JAX': {
+		name: 'Jacksonville Jaguars',
+		shortname: 'Jaguars',
+		img100: '/images/JAC.png'
+	},	
 	'TEN': {
 		name: 'Tennessee Titans',
 		shortname: 'Titans',

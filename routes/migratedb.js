@@ -35,8 +35,7 @@ exports.execute = function( callback ) {
 		versiondb.findOne(function(err,version) {
 			if ( err ) throw err;
 			if ( version === null ) {
-				initialize
-			(db, end);
+				initialize(db, end);
 			} else {
 				end(db);
 			}

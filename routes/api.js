@@ -1,6 +1,7 @@
 var login = require('./login');
 var games = require('./data/games');
 var impl = require('./data/impl');
+var thescore = require('./data/thescore');
 var connection = require('./database');
 
 var checkAdmin = function( req, res, next ) {
@@ -42,9 +43,45 @@ function getDb( req, res, next ) {
 };
 
 exports.install = function( app ) {
-	app.get('/api/games/:year/:week', getDb, login.authenticate, impl.fetchGames, getGames);
-	app.get('/api/games/:year/:week/:gameid', getDb, login.authenticate, impl.fetchGames, getGame);
-	app.get('/api/picks/:year/:week', getDb, login.authenticate, impl.fetchGames, getPicks);
-	app.post('/api/picks/:year/:week/:gameid', getDb, login.authenticate, impl.fetchGames, updatePick);
-	app.post('/api/admin/spreads/:year/:week', getDb, login.authenticate, checkAdmin, impl.fetchGames, updateSpreads);
+	app.get(
+		'/api/games/:year/:week',
+		getDb,
+		login.authenticate,
+		// impl.fetchGames,
+		thescore.fetchGames,
+		getGames
+	);
+	app.get(
+		'/api/games/:year/:week/:gameid',
+		getDb,
+		login.authenticate,
+		// impl.fetchGames,
+		thescore.fetchGames,
+		getGame
+	);
+	app.get(
+		'/api/picks/:year/:week',
+		getDb,
+		login.authenticate,
+		// impl.fetchGames,
+		thescore.fetchGames,
+		getPicks
+	);
+	app.post(
+		'/api/picks/:year/:week/:gameid',
+		getDb,
+		login.authenticate,
+		// impl.fetchGames,
+		thescore.fetchGames,
+		updatePick
+	);
+	app.post(
+		'/api/admin/spreads/:year/:week',
+		getDb,
+		login.authenticate,
+		checkAdmin,
+		// impl.fetchGames,
+		thescore.fetchGames,
+		updateSpreads
+	);
 };

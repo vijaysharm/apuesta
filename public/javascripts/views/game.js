@@ -37,7 +37,8 @@ define([
 			this.trigger('save', {
 				pick: team,
 				gameid: gameid,
-				week: data.week
+				week: data.week,
+				year: data.year
 			});
 		},
 		addTeamPick: function() {
