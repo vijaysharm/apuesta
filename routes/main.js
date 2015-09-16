@@ -54,7 +54,7 @@ function getDate() {
 
 	return {
 		// REG season
-		year: date.getFullYear(),
+		year: 2015,
 		type: 'REG',
 		max: 17,
 		min: 1,
